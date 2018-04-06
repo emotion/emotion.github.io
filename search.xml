@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title>Deepin下交换CapsLock和Ctrl键</title>
+      <link href="/2017/12/01/Deepin%E4%B8%8B%E4%BA%A4%E6%8D%A2CapsLock%E5%92%8CCtrl/"/>
+      <url>/2017/12/01/Deepin%E4%B8%8B%E4%BA%A4%E6%8D%A2CapsLock%E5%92%8CCtrl/</url>
+      <content type="html"><![CDATA[<p>在自己的电脑为了不再折腾Linux的桌面了，所以转到Deepin发行版<br>按照一贯的键盘设置，需要交换CapsLock和Ctrl_L</p><p>查找到最靠谱的配置如下：（原文的配置有点问题）<br><a href="http://blog.csdn.net/itfcheins/article/details/48732967" target="_blank" rel="noopener">http://blog.csdn.net/itfcheins/article/details/48732967</a></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gsettings set com.deepin.dde.keybinding.mediakey capslock "[]"</span><br><span class="line">gsettings set com.deepin.dde.keyboard layout-options "['ctrl:swapcaps']"</span><br></pre></td></tr></table></figure><p>不过实际使用之后发现，deepin更新之后，这个配置可能会被重置，但是均衡配置的风险、难度和可用性之后，还是继续使用这个配置。</p><p>另外找到一个更危险的配置方式，是利用构建自定义键盘布局的方式配置的，不过考虑了一下还是不入这种坑了：<a href="https://help.ubuntu.com/community/Custom%20keyboard%20layout%20definitions?action=show&amp;redirect=Howto%3A+Custom+keyboard+layout+definitions" target="_blank" rel="noopener">https://help.ubuntu.com/community/Custom%20keyboard%20layout%20definitions?action=show&amp;redirect=Howto%3A+Custom+keyboard+layout+definitions</a></p><p>另外网上普遍的做法都是一种一次性的配置方法，重启之后就会失效，需要自己手动执行命令，似乎重复执行还会出现问题：<br><a href="http://blog.csdn.net/xiaoqin515515/article/details/18840035" target="_blank" rel="noopener">http://blog.csdn.net/xiaoqin515515/article/details/18840035</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">使用xmodmap工具进行修改，使用man xmodmap，里面就有交换按键caplock（大小写切换键）和右ctrl键的例子，</span><br><span class="line">如果您的修改不同，可以做相应的替换即可。我就是参考这个例子对我的右Alt键和Ctrl键进行修改的。</span><br><span class="line">下面先看man自带的例子</span><br><span class="line">       ! </span><br><span class="line">       ! Swap Caps_Lock and Control_L</span><br><span class="line">       !</span><br><span class="line">       remove Lock = Caps_Lock</span><br><span class="line">       remove Control = Control_L</span><br><span class="line">       keysym Control_L = Caps_Lock</span><br><span class="line">       keysym Caps_Lock = Control_L</span><br><span class="line">       add Lock = Caps_Lock</span><br><span class="line">       add Control = Control_L</span><br><span class="line">将上面的语句写入文件，例如keymaprc，然后xmodmap keymaprc即可生效，</span><br><span class="line">因为这个是交换键的功能，如果您执行第二次的话，按键就又会恢复回来的。</span><br><span class="line">注意：这个修改只对当前有效，电脑重启会失效，得重新输入命令。</span><br><span class="line"></span><br><span class="line">下面是我自己的修改，把keymaprc命名为隐藏文件: .keymaprc，放在$HOME目录下。</span><br><span class="line">$ cat ~/.keymaprc </span><br><span class="line">remove Control = Control_R</span><br><span class="line">remove mod1 = Alt_R</span><br><span class="line">keysym Control_R = Alt_R</span><br><span class="line">keysym Alt_R = Control_R</span><br><span class="line">add Control = Control_R</span><br><span class="line">add mod1 = Alt_R</span><br><span class="line">然后执行 $ xmodmap ~/.keymaprc</span><br><span class="line">这样就生效了</span><br><span class="line"></span><br><span class="line">为了更加修改按键，不想很次都输入xmodmap ~/.keymaprc这么长的命令，可以将命令写入文本，放到$PATH路径下，下面是我的做法</span><br><span class="line">$ touch swkey</span><br><span class="line">$ echo &quot;xmodmap ~/.keymaprc&quot; &gt;  swkey</span><br><span class="line">$ chmod +x swkey</span><br><span class="line">$ sudo mv swkey /usr/bin</span><br><span class="line">$ swkey  #现在想交换两个按键就直接输入这个命令,无论在什么路径下都可以，也不用记文件路径，会比较方便</span><br><span class="line"></span><br><span class="line">备注：</span><br><span class="line">alt对就MODIFIERNAME为mod1，可以在man文档中找到其他的MODIFIERNAME，也可以直接xmodmap查看，window键应该对应mod4</span><br><span class="line">$ xmodmap </span><br><span class="line">xmodmap:  up to 4 keys per modifier, (keycodes in parentheses):</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">shift       Shift_L (0x32),  Shift_R (0x3e)</span><br><span class="line">lock        Caps_Lock (0x42)</span><br><span class="line">control     Control_L (0x25),  Control_R (0x69)</span><br><span class="line">mod1        Alt_L (0x40),  Alt_R (0x6c),  Meta_L (0xcd)</span><br><span class="line">mod2        Num_Lock (0x4d)</span><br><span class="line">mod3      </span><br><span class="line">mod4        Super_L (0x85),  Super_R (0x86),  Super_L (0xce),  Hyper_L (0xcf)</span><br><span class="line">mod5        ISO_Level3_Shift (0x5c),  Mode_switch (0xcb)</span><br></pre></td></tr></table></figure></p>]]></content>
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Deepin </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> CapsLock </tag>
+            
+            <tag> Ctrl </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>header with underline name in nginx</title>
+      <link href="/2017/12/01/header-with-underline-name-in-nginx/"/>
+      <url>/2017/12/01/header-with-underline-name-in-nginx/</url>
+      <content type="html"><![CDATA[<p><a href="http://stackoverflow.com/questions/22856136/why-underscores-are-forbidden-in-http-header-names" target="_blank" rel="noopener">http://stackoverflow.com/questions/22856136/why-underscores-are-forbidden-in-http-header-names</a></p><p>If you do not explicitly set underscores_in_headers on;, nginx will silently drop HTTP headers with underscores (which are perfectly valid according to the HTTP standard). This is done in order to prevent ambiguities when mapping headers to CGI variables, as both dashes and underscores are mapped to underscores during that process.</p><p>所以如果系统使用了nginx作为代理，应该尽量避免设计underscore命名的header名，按照所观察到的各家企业自己自定义的header名，我们可以知道一个大概的规范：x-${serviceName}-${headerName}，用x开头表示这是一个extends的header，接着serviceName为了避免和别人设计的header重名，最后才是需要的headerName，另外使用中划线替代下划线，避免出现nginx配置上的问题，或者其它一些代理系统也使用这种默认行为，这样就可以减少服务器的配置，以代码解决这个问题了。</p>]]></content>
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> nginx </tag>
+            
+            <tag> header </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>quartz startAtNow 延时30秒的坑</title>
+      <link href="/2017/12/01/quartz-startAtNow%E5%BB%B6%E6%97%B630%E7%A7%92%E7%9A%84%E5%9D%91/"/>
+      <url>/2017/12/01/quartz-startAtNow%E5%BB%B6%E6%97%B630%E7%A7%92%E7%9A%84%E5%9D%91/</url>
+      <content type="html"><![CDATA[<h2 id="quartz-startAtNow-延时30秒的坑"><a href="#quartz-startAtNow-延时30秒的坑" class="headerlink" title="quartz startAtNow 延时30秒的坑"></a>quartz startAtNow 延时30秒的坑</h2><p>首先介绍一下背景，工作中需要开发一个可能包含定时功能的一个调度系统。</p><p>既然是需要定时功能，很自然的变想到引入quartz做定时器。而在使用quartz的时候发现了quartz中的其中一些功能，比如：</p><ul><li>quartz有cluster的模式，可以用在集群里面</li><li>quartz的trigger有startAtNow的功能<ul><li>有函数名可以看出来就是可以马上触发一个任务的功能，而这个就是遇到延时坑的原因</li></ul></li></ul><p>另外在调度系统中：</p><ul><li>我们需要一个消息队列来分发任务，而且考虑到后续扩容的需求，这个消息队列还需要可以满足调度系统组件集群的要求（quartz的cluster马上浮现在眼前）</li><li>既然是调度任务，就会有可能出现节点失败重试的情况，重试的时候就需要延时几秒几分钟再重试（quartz的定时功能+设置只执行一次又满足了功能上的要求）</li></ul><p>既然quartz满足了功能上调度系统分发任务的要求，那么开发的时候就先直接在quartz上直接开发调度系统了，调度系统也能正常工作。但是在实际使用的时候，使用者反映任务执行的时间过长，需要缩短时间，中间检查的过程不表，最后发现一个任务startAtNow之后，总是延迟大概30秒后任务才会调度起来。</p><p>那么就开始检查问题，按照quartz的数据库表设计，可以大概知道quartz的整个设计</p><ul><li>quartz的startAtNow设置的时间是系统的System.currentTimeMillis()，那么很明显这样设计可能会由于调度系统机器之间的时间不同步而导致调度系统出现异常的情况。（我在日常环境测试的时候，多台机器部署起来也遇到过这个问题）<ul><li>我只部署一台机器也会出现这个问题。</li><li>我详细检查了startAtNow之后，数据库中存储的时间，发现时间并没有问题，fireTime和机器上的时间是同步的</li><li>所以并不是这里出了问题。</li></ul></li><li>quartz里面有个checkinInterval的配置，顾名思义，就是quartz进行心跳检查的一个时间间隔<ul><li>按照quartz的设计，是需要一个轮询数据库获取触发任务的过程的，那么轮询数据库需要一个时间间隔，要不然当没有任务触发的时候，会导致过于频繁的数据库查询而出问题</li><li>所以我猜想这个checkinInterval也是控制轮询数据库时间间隔的设置</li><li>但是通过设置checkinInterval为一秒之后，问题还是这样，没有任何效果。所以checkinInterval并不能控制轮询的时间间隔</li></ul></li><li>到了这里，那就只能是quartz的设计问题了，按照quartz定时任务的定位，可以猜到这很可能是缓存的问题，而这个缓存是为了任务能够在时间点上直接触发，而不是当任务时间点到了才去轮询-&gt;查询到要触发的任务-&gt;集群机器争用抢锁-&gt;延迟一定的时候后触发<ul><li>所以quartz的设计应该是（后续查看代码也证实了）轮询的时候是获取之后一定时间内会触发的任务，然后这些任务会保存在内存中，直到任务所对应的触发时间到达之后马上触发，由此轮询的时间间隔是和获取任务的时间窗口是相关的（很可能是相同的）</li><li>按照这个设计，如果startAtNow的话，由于存在轮询的时间间隔（很可能是30秒），所以导致startAtNow之后会延时30秒</li></ul></li></ul><h3 id="接下来通过quartz的代码问题实际出在哪里。"><a href="#接下来通过quartz的代码问题实际出在哪里。" class="headerlink" title="接下来通过quartz的代码问题实际出在哪里。"></a>接下来通过quartz的代码问题实际出在哪里。</h3><ul><li>那么首先是应该查看哪些代码来看问题出现在哪里。首先从github上pull quartz的代码，并且导入到IDEA中。</li><li>然后我们需要知道，我们要查看的代码是quartz轮询的部分，那么轮询的部分是在哪里呢。按照quartz的设计，需要执行的Job是需要implement一个接口的：org.quartz.Job，而这个接口只有一个函数定义：org.quartz.Job#execute，那么我们可以知道quartz肯定是在循环的哪里调用了这个接口</li><li>接着查找这个接口在哪里进行了调用，可以找到只有一个地方：org/quartz/core/JobRunShell.java:202，org.quartz.core.JobRunShell#run。在方法体里面我们没有看到轮询，那么还需要往更上层查找。既然是run方法，再看类是否继承了Thread或者实现了Runnable接口，可以知道这个类很可能是会被丢到线程池里面执行的，那么我们就需要另外的方法去查找引用的地方，我找到了一个很可能的函数org.quartz.core.JobRunShell#initialize</li><li>查找使用了这个函数的地方可以找到：org/quartz/core/QuartzSchedulerThread.java:392， org.quartz.core.QuartzSchedulerThread#run  我们可以看到这里有一个轮询，所以这里应该就是需要找的地方了。</li><li><p>然后查看这段代码，可以发现末尾有一段代码</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> now = System.currentTimeMillis();</span><br><span class="line"><span class="keyword">long</span> waitTime = now + getRandomizedIdleWaitTime();</span><br><span class="line"><span class="keyword">long</span> timeUntilContinue = waitTime - now;</span><br><span class="line"><span class="keyword">synchronized</span> (sigLock) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!halted.get()) &#123;</span><br><span class="line">            <span class="comment">// QTZ-336 A job might have been completed in the mean time and we might have</span></span><br><span class="line">            <span class="comment">// missed the scheduled changed signal by not waiting for the notify() yet</span></span><br><span class="line">            <span class="comment">// Check that before waiting for too long in case this very job needs to be</span></span><br><span class="line">            <span class="comment">// scheduled very soon</span></span><br><span class="line">            <span class="keyword">if</span> (!isScheduleChanged()) &#123;</span><br><span class="line">                sigLock.wait(timeUntilContinue);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException ignore) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>可以看到这一段代码会让轮询睡眠getRandomizedIdleWaitTime()的时间，而这个睡眠时间可以看到是接近30秒的，由此可以知道，导致这个startAtNow延时的地方就是这个idleWaitTime。这里有一个setIdleWaitTime方法，所以可以猜测到quartz有一个设置idleWaitTime的配置</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// When the scheduler finds there is no current trigger to fire, how long</span></span><br><span class="line"><span class="comment">// it should wait until checking again...</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> DEFAULT_IDLE_WAIT_TIME = <span class="number">30L</span> * <span class="number">1000L</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">long</span> idleWaitTime = DEFAULT_IDLE_WAIT_TIME;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> idleWaitVariablness = <span class="number">7</span> * <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setIdleWaitTime</span><span class="params">(<span class="keyword">long</span> waitTime)</span> </span>&#123;</span><br><span class="line">    idleWaitTime = waitTime;</span><br><span class="line">    idleWaitVariablness = (<span class="keyword">int</span>) (waitTime * <span class="number">0.2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">long</span> <span class="title">getRandomizedIdleWaitTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> idleWaitTime - random.nextInt(idleWaitVariablness);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>至此，已经找到了quartz startAtNow的问题已经解决办法了，不过我已经另外自己仿照quartz写了一套有延时触发机制的简单消息队列了，主要考虑的问题是：</p></li><li>调度系统后续不怎么需要定时功能，而且引入quartz之后，有各种不可控因素，比如这个idleWaitTime这种不怎么用得到的配置</li><li>quartz使用的是机器的System.currentTimeMillis作为触发时间，集群模式下各台机器需要同步时间，这在部署的时候可能会出现坑</li><li>自己实现可以抛弃Job和Trigger分离等各种对于调度系统来说冗余的设计，使得消息队列更容易控制。</li></ul>]]></content>
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Quartz </tag>
+            
+            <tag> 坑 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>ServletRequest和HttpServletRequest</title>
+      <link href="/2017/01/15/ServletRequest%E5%92%8CHttpServletRequest-/"/>
+      <url>/2017/01/15/ServletRequest%E5%92%8CHttpServletRequest-/</url>
+      <content type="html"><![CDATA[<h2 id="ServletRequest和HttpServletRequest"><a href="#ServletRequest和HttpServletRequest" class="headerlink" title="ServletRequest和HttpServletRequest"></a>ServletRequest和HttpServletRequest</h2><ul><li>当我们需要自己写filter的时候，我们经常会遇到的接口会有ServletRequest和HttpServletRequest，类似的还有ServletResponse和HttpServletResponse<ul><li>例如Filter接口的doFilter(SerlvetRequest request, SerlvetResponse response, FilterChain chain);</li><li>还有OncePerRequestFilter的doFilterInternal(<pre><code>HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)；</code></pre></li></ul></li><li>我们可以看到这里使用了不同的ServletRequest和HttpServletRequest，而且也经常看到直接将ServletRequest强转为HttpServletRequest的代码。这就让人很迷惑了，既然可以强转HttpServletRequest，为什么不直接使用HttpServletRequest呢？</li><li>这两个接口名字上的区别就是Http，所以我的感觉是：是不是还有其它协议的ServletRequest，但是在代码中查找却找不到其它协议的ServletRequest接口。</li><li>不过通过万能的Google，我找到了一个答案<a href="https://coderanch.com/t/621449/java/Difference-ServletRequest-HttpServletRequest" target="_blank" rel="noopener">https://coderanch.com/t/621449/java/Difference-ServletRequest-HttpServletRequest</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Hi Everyone </span><br><span class="line"></span><br><span class="line">I have couple of doubts, they are as follows: </span><br><span class="line">Que1 - What is the difference between the request/ response objects of these two interfaces (ServletRequest &amp; HttpServletRequest) ? </span><br><span class="line">Que2 - When a request is send from client to the server, then that request object is whose object ServletRequest or HttpServletRequest ?</span><br></pre></td></tr></table></figure></li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. Http. Servlets are actually generic components designed to support any sort of operation that operates in a request/response cycle. That mostly means HTTP, but ages ago, IBM mainframes routinely did their online apps in a framework known as CICS (Customer Information Control System). It didn&apos;t use tcp/ip (not invented yet), and it didn&apos;t use HTML or HTTP (also not invented yet), but it was (mostly) request/response. So had servlets - or Java - existed back then, they would have been appropriate. </span><br><span class="line"></span><br><span class="line">What an HttpServlet adds to the core servlet class is support for things specific to HTTP. For example, how URLs are processed, the difference between request types (GET, POST, HEAD, DELETE and so forth). </span><br><span class="line"></span><br><span class="line">2. Both (an HttpServletRequest is a subclass of ServletRequest). When an HTTP client sends an HTTP(S) URL request to a J2EE webapp server, the server digests the incoming request and constructs an HttpServletRequest and corresponding HttpServletResponse object. Among other things, such as matching up sessions, if applicable. </span><br><span class="line"></span><br><span class="line">Don&apos;t forget that all of the above are Interfaces, not classes, so the server&apos;s specific implementation class will implement the interface, but its properties and behaviours above and beyond what those interfaces demand are server-specific.</span><br></pre></td></tr></table></figure><ul><li>由此我们可以知道，真的是有其它协议的ServletRequest的。ServletRequest是为了更通用的目的（不只是HTTP）而设计的接口，很久很久以前IBM主机上一个框架CICS就有他们专门的协议，这协议也是兼容ServletRequest这个接口的</li><li>按照这个情况的话，那么ServletRequest和HttpServletRequest这个设计是没有问题的，只是在如今，在tomcat上，我们通常的情况都是默认使用的是HTTP协议，用的是HttpServletRequest，所以强制转ServletRequest为HttpServletRequest是没有问题的。</li></ul>]]></content>
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Spring </tag>
+            
+            <tag> ServletRequest，HttpServletRequest，Tomcat </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>Tomcat报错没有详细日志的解决办法</title>
+      <link href="/2017/01/15/tomcat-%E6%8A%A5%E9%94%99%E6%B2%A1%E6%9C%89%E8%AF%A6%E7%BB%86%E6%97%A5%E5%BF%97/"/>
+      <url>/2017/01/15/tomcat-%E6%8A%A5%E9%94%99%E6%B2%A1%E6%9C%89%E8%AF%A6%E7%BB%86%E6%97%A5%E5%BF%97/</url>
+      <content type="html"><![CDATA[<p>在使用tomcat的时候，tomcat启动有时会遇到这样的一个错误日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SEVERE: One or more listeners failed to start. Full details will be found in the appropriate container log file</span><br></pre></td></tr></table></figure></p><p>但是详细的错误信息并没有一起打印出来，这种情况要怎么办呢？</p><ul><li>首先应该按照指示，去检查其它的log文件，看看有没有对应的Exception打印出来</li><li>如果没有的话，那么表示这些日志默认是不打印的。通过搜索可以找到下一步的解决办法<br><a href="https://jaykhimani.blogspot.com/2016/12/tomcat-one-or-more-listeners-failed-to.html" target="_blank" rel="noopener">https://jaykhimani.blogspot.com/2016/12/tomcat-one-or-more-listeners-failed-to.html</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Whenever you face with this error, under your WEB-INF/classes directory, create file logging.properties with the following content and restart the tomcat server.</span><br></pre></td></tr></table></figure></li></ul><p>在应用目录对应的WEB-INF/classes下面创建logging.properties，并把如下内容填入。<br>下面的配置内容是将tomcat容器的打印日志等级调为INFO，并且日志的handler设置为java.util.logging.ConsoleHandler，即打印到控制台上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].level=INFO</span><br><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].handlers=java.util.logging.ConsoleHandler</span><br></pre></td></tr></table></figure></p><p>重启tomcat，到这一步一般情况下都能够获取到启动时候的错误信息了。</p><ul><li>但是还是会出现日志还是没有的情况，那么很可能日志系统的配置是有问题的，排查的方法如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep tomcat</span><br></pre></td></tr></table></figure></li></ul><p>首先通过命令查找对应tomcat实例，并获得其启动命令，如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/jvm/jre/bin/java -classpath /usr/share/tomcat/bin/bootstrap.jar:/usr/share/tomcat/bin/tomcat-juli.jar:/usr/share/java/commons-daemon.jar -Dcatalina.base=/usr/share/tomcat -Dcatalina.home=/usr/share/tomcat -Djava.endorsed.dirs= -Djava.io.tmpdir=/var/cache/tomcat/temp -Djava.util.logging.config.file=/usr/share/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager org.apache.catalina.startup.Bootstrap start</span><br></pre></td></tr></table></figure></p><p>由于之前修改的logging.properties是将日志打印到控制台中，所以我们可以将tomcat stop，然后使用以上命令，在控制台上启动tomcat，如果出现错误的话，错误信息就会输出到控制台上了。</p><ul><li><p>这个时候可能还会遇到一个问题，手动启动是能够正常启动的，但是通过systemctl启动会启动失败，那么可以试试在命令之前加上</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u tomcat</span><br></pre></td></tr></table></figure><p>即：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u tomcat /usr/lib/jvm/jre/bin/java -classpath /usr/share/tomcat/bin/bootstrap.jar:/usr/share/tomcat/bin/tomcat-juli.jar:/usr/share/java/commons-daemon.jar -Dcatalina.base=/usr/share/tomcat -Dcatalina.home=/usr/share/tomcat -Djava.endorsed.dirs= -Djava.io.tmpdir=/var/cache/tomcat/temp -Djava.util.logging.config.file=/usr/share/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager org.apache.catalina.startup.Bootstrap start</span><br></pre></td></tr></table></figure></li></ul><p>由于使用命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start tomcat</span><br></pre></td></tr></table></figure></p><p>启动tomcat的时候，是以tomcat用户启动的tomcat实例，而一般我们登录机器的时候，并不是以tomcat用户启动的，这会使启动tomcat实例的用户权限不同，而出现的问题也会不同，通过sudo -u tomcat可以通过tomcat用户执行对应的命令。</p><p>我最终查到的结果是</p><ul><li>因为依赖的库中有一个log4j2.xml配置文件，log4j2.xml与应用的日志配置冲突了，导致错误信息（所有应用的日志）并没有打印到对应的日志文件中。加了logging.properties之后，由于日志配置问题，控制台的日志信息并没有落入日志文件中。</li><li>另外其所配置的日志路径是相对路径，而tomcat用户没有对应的路径的文件权限，所以会报Exception导致tomcat启动失败</li></ul><p>所以配置好logging.propertie后，通过tomat用户在控制台上手动启动tomcat，就可以将控制台的日志（tomcat的启动的日志）打印出来了。由此可以知道具体的Exception信息。</p>]]></content>
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Tomcat </tag>
+            
+            <tag> 日志 </tag>
+            
+            <tag> 报错 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>HttpServletRequest getInputStream为空的坑</title>
+      <link href="/2016/11/18/HttpServletRequest-getInputStream%E4%B8%BA%E7%A9%BA%E7%9A%84%E5%9D%91/"/>
+      <url>/2016/11/18/HttpServletRequest-getInputStream%E4%B8%BA%E7%A9%BA%E7%9A%84%E5%9D%91/</url>
+      <content type="html"><![CDATA[<h2 id="HttpServletRequest-getInputStream为空的坑"><a href="#HttpServletRequest-getInputStream为空的坑" class="headerlink" title="HttpServletRequest getInputStream为空的坑"></a>HttpServletRequest getInputStream为空的坑</h2><p><strong>问题：在用HttpClient做HttpServletRequest的代理的时候，有时候需要用到getInputStream来获取HttpServletRequest对应请求的请求Body中的内容进行转发。但是在实际的使用过程中，出现了点问题，代理的行为并没有完全符合期望。</strong></p><p>通过Debug手段、HttpClient的Debug日志和打印Request body内容等方式，定位到HttpServletRequest.getInputStream 获取到的内容总是为空。<br>排查整个Http Request的整个流程：</p><ol><li>用户访问页面或者进行某个操作</li><li>浏览器发送Http请求-&gt;Nginx(Tengine)接收到请求，清洗流量，转发给后端tomcat</li><li>tomcat接受到请求，对请求进行包装成为ServletRequest（对于我们来说，一般可以转换为HttpServletRequest）</li><li>HttpServletRequest经历web.xml配置里面的Filter和Servlet的处理。<ul><li>首先我通过浏览器的Network查看请求的内容，可以发现request的body是有内容的，所以流程1和2是没有问题的。Nginx中并没有进行什么深度的定制和配置，所以我们可以先假定这一段是没有问题的。那么问题应该是出现在流程是，ServletRequest经过Filter和Servlet之后，InputStream就没有内容了。</li><li>回想到InputStream的一个特性（大部分时候都是这样），InputStream既然名字为Stream，那么它在被读取之后，是不能够再被读取的（即不能被反复被读取）</li><li>所以现在可以假设InputStream是被那个地方读取过，所以导致了InputStream没有内容了。但是按照我的代码，并没有其它地方有getInputStream这个操作了，所以只能从其它方面找。</li><li>又回想起当我们POST一个请求的时候，一般来说参数是在POST请求的body里面的，body的ContentType为application/x-www-form-urlencoded（即普通form表单的参数形式，按照url中的参数那种方式进行encode），而如果HttpServletRequest.getParameter(),即从POST请求中获取参数的时候，是肯定会去获取body的参数的。那么问题来了，它是怎么获取body的参数的呢？很明显它需要通过InputStream，才能读取到body的内容。</li><li>所以结合上面两点我们可以推测：既然我们既可以getInputStream和getParameter，所以如果用户没有调用getParameter，那么HttpServletRequest是不会去读取InputStream的，那么我们可以通过getInputStream获取到request的body；而如果调用了getParameter，那么HttpServletRequest就会去解析InputStream获取参数的内容，从而导致在获取InputStream的时候，里面已经没有内容可以读了，所以就会出现RequestBody内容为空的问题。</li><li>通过将所有会调用getParameter的Filter都调整到ProxyFilter之后，代理的行为正常了，然后通过查看HttpServletRequest.getParameter的代码，可以看到起读取InputStream内容的代码。所以可以验证我的推测是正确的。</li></ul></li></ol><p><strong>以上，如果想使用HttpServletRequest.getInputStream，那么在之前一定不能调用getParameter，因为它会去解析InputStream，而导致getInputStream的时候InputStream中已经没有内容了。</strong></p>]]></content>
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Proxy，HttpServletRequest，InputStream </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>what synchronized do for stale data?</title>
+      <link href="/2016/05/26/what-synchronized-do-for-stale-data-/"/>
+      <url>/2016/05/26/what-synchronized-do-for-stale-data-/</url>
+      <content type="html"><![CDATA[<p>对于使用同一个锁的sync block，block之前和之中进行的数据修改，在block块结束之后，都可以在其它线程的sync block中可见。<br>原理应该是和volatile类似，volatile是在数据写入的时候，将数据写入main memory中，并且同时将cpu其它core的这个数据的cache置失效<br>而sync在结束之后，会将线程所在的core的cache的stale data都写入main memory中，同时会将其它core的这些stale data对应的cache置失效<br>  (ps: cache被置失效之后，下次读取该数据的时候，就必须到main memory进行读取，所以会读到最新的数据.)<br>we are java developers, we only know virtual machines, not real machines!<br>let me theorize what is happening - but I must say I don’t know what I’m talking about.<br>say thread A is running on CPU A with cache A, thread B is running on CPU B with cache B</p><ul><li>thread A reads y; CPU A fetches y from main memory, and saved the value in cache A.</li><li>thread B assigns new value to ‘y’. VM doesn’t have to update the main memory at this point; as far as thread B is concerned, it can be reading/writing on a local image of ‘y’; maybe the ‘y’ is nothing but a cpu register.</li><li>thread B exits a sync block and releases a monitor. (when and where it entered the block doesn’t matter). thread B has updated quite some variables till this point, including ‘y’. All those updates must be written to main memory now.</li><li>CPU B writes the new y value to place ‘y’ in main memory. (I imagine that) almost INSTANTLY, information ‘main y is updated’ is wired to cache A, and cache A invalidate its own copy of y. That must have happened really FAST on the hardware.</li><li>thread A acquires a monitor and enters a sync block - at this point it doesn’t have to do anything regarding cache A. ‘y’ has already gone from cache A. when thread A reads y again, it’s fresh from main memory with the new value assigned by B.</li><li>consider another variable z, which was also cached by A in step(1), but it’s not updated by thread B in step(2). it can survive in cache A all the way to step(5). access to ‘z’ is not slowed down because of synchronization.</li></ul><p>if the above statements make sense, then indeed the cost isn’t very high.</p><p>ref: <a href="http://stackoverflow.com/questions/1850270/memory-effects-of-synchronization-in-java" target="_blank" rel="noopener">http://stackoverflow.com/questions/1850270/memory-effects-of-synchronization-in-java</a></p>]]></content>
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> CPU </tag>
+            
+            <tag> Cache </tag>
+            
+            <tag> Stale Data </tag>
+            
+            <tag> Synchronized </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>MyBatis打印sql日志(Spring+MyBatis)</title>
+      <link href="/2016/03/26/MyBatis%E6%89%93%E5%8D%B0sql%E6%97%A5%E5%BF%97(Spring+MyBatis)/"/>
+      <url>/2016/03/26/MyBatis%E6%89%93%E5%8D%B0sql%E6%97%A5%E5%BF%97(Spring+MyBatis)/</url>
+      <content type="html"><![CDATA[<h2 id="MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置"><a href="#MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置" class="headerlink" title="MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置"></a>MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置</h2><ul><li>首先MyBatis的配置（注：中文的文档里面没有这些）：<a href="http://mybatis.org/mybatis-3/logging.html" target="_blank" rel="noopener">http://mybatis.org/mybatis-3/logging.html</a><ul><li>在spring的sqlSessionFactory中配置mybatis的配置的位置<ul><li>mybatis-config.xml这个配置文件可以扩展MyBatis的一些配置，而不用首先与spring的固有格式    </li><li>在mybatis-config.xml里面配置好MyBatis日志的实现方式<ul><li>MyBatis支持的日志实现有：SLF4J、Apache Commons Logging、Log4j 2、Log4j、JDK logging，但这里只展示log4j的配置</li></ul></li></ul></li></ul></li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring的配置</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;</span><br><span class="line">        ***</span><br><span class="line">        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:spring/mybatis-config.xml&quot;/&gt;</span><br><span class="line">        ***</span><br><span class="line">    &lt;/bean&gt;</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mybati-config.xml的配置</span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE configuration</span><br><span class="line">        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;settings&gt;</span><br><span class="line">    ***</span><br><span class="line">        &lt;setting name=&quot;logImpl&quot; value=&quot;LOG4J&quot;/&gt;</span><br><span class="line">        ***</span><br><span class="line">    &lt;/settings&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure><ul><li>Log4j的配置<ul><li><a href="https://logging.apache.org/log4j/1.2/manual.html" target="_blank" rel="noopener">https://logging.apache.org/log4j/1.2/manual.html</a></li><li>按Log4j的文档，其配置主要有：Loggers、Appenders和Layouts</li><li>其中Appenders和Layouts都可以copy别人的代码再对其进行修改来进行配置，下面是我的其中一个appender的配置，也是用于MyBatis的sql日志的配置。<ul><li>需要注意的配置有encoding，日志的编码</li><li>threshold，这个appender会记录的日志的level<ul><li>日志的level有：TRACE,DEBUG,INFO,WARN,ERROR and FATAL</li></ul></li><li>layout配置，打印日志的格式</li></ul></li></ul></li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">log4j的appender配置</span><br><span class="line"></span><br><span class="line">&lt;appender name=&quot;DEBUG-APPENDER&quot; class=&quot;org.apache.log4j.DailyRollingFileAppender&quot;&gt;</span><br><span class="line">        &lt;param name=&quot;file&quot; value=&quot;/Users/emotion/logs/applog/debug.log&quot;/&gt;</span><br><span class="line">        &lt;param name=&quot;append&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;param name=&quot;encoding&quot; value=&quot;UTF-8&quot;/&gt;</span><br><span class="line">        &lt;param name=&quot;threshold&quot; value=&quot;DEBUG&quot;/&gt;</span><br><span class="line">        &lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;</span><br><span class="line">            &lt;param name=&quot;ConversionPattern&quot;</span><br><span class="line">                   value=&quot;%d [%X&#123;requestURIWithQueryString&#125;]%n  SQL：  %-5p %c&#123;2&#125; - %m%n&quot;/&gt;</span><br><span class="line">        &lt;/layout&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br></pre></td></tr></table></figure><ul><li>接着<ul><li>logger的配置</li><li>我们可以将logger看做一棵树，其中root节点是所有日志都会汇入<root>节点的appender中</root></li><li>当我们定义了logger之后，以logger的name作为package或者class，在这个package之下的class或者这个class的日志会使用这个特别定制的appender</li><li>这样我们就可以将我们需要分离出来的日志，单独做一个appender，避免和其它文件混合在一起而导致很难查找了。</li><li>在logger中的name为package或者class</li><li>level就是记录的日志的等级</li><li>appender-ref则是这个日志流会流向的appender引用</li></ul></li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;root&gt;</span><br><span class="line">        &lt;level value=&quot;INFO&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;PROJECT&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;JmonitorAppender&quot;/&gt;</span><br><span class="line">    &lt;/root&gt;</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">log4j的logger配置</span><br><span class="line"></span><br><span class="line">   &lt;logger name=&quot;org.apache.ibatis&quot; additivity=&quot;true&quot;&gt;</span><br><span class="line">        &lt;level value=&quot;DEBUG&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;</span><br><span class="line">    &lt;/logger&gt;</span><br><span class="line">    &lt;logger name=&quot;java.sql.Statement&quot; additivity=&quot;true&quot;&gt;</span><br><span class="line">        &lt;level value=&quot;DEBUG&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;</span><br><span class="line">    &lt;/logger&gt;</span><br><span class="line">    &lt;logger name=&quot;java.sql&quot; additivity=&quot;true&quot;&gt;</span><br><span class="line">        &lt;level value=&quot;DEBUG&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;</span><br><span class="line">    &lt;/logger&gt;</span><br></pre></td></tr></table></figure><ul><li>总结<ul><li>首先在MyBatis中定义logImpl，这样就可以让MyBatis的日志机制正常工作</li><li>在log4j中配置好level为debug的appender和logger，这样就可以让应用的日志系统正常的记录MyBatis的日志到配置的文件里面了。</li></ul></li></ul>]]></content>
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Spring </tag>
+            
+            <tag> MyBatis </tag>
+            
+            <tag> Log4j </tag>
+            
+            <tag> Logging </tag>
+            
+        </tags>
+      
+    </entry>
+    
+  
+  
+</search>

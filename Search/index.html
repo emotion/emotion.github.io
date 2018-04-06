@@ -8,13 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="emotion&apos;s blogs">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Emotion">
-<meta property="og:url" content="http://yoursite.com/tags/Log4j/index.html">
+<meta property="og:title" content="Search">
+<meta property="og:url" content="http://yoursite.com/Search/index.html">
 <meta property="og:site_name" content="Emotion">
 <meta property="og:description" content="emotion&apos;s blogs">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-06T04:11:04.671Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Emotion">
+<meta name="twitter:title" content="Search">
 <meta name="twitter:description" content="emotion&apos;s blogs">
     
     
@@ -35,7 +36,7 @@
         
     
     <!-- title -->
-    <title>Emotion</title>
+    <title>Search</title>
     <!-- styles -->
     <link rel="stylesheet" href="/css/style.css">
     <!-- rss -->
@@ -77,37 +78,23 @@
 </header>
 
         
-        <div id="archive">
-  <ul class="post-list">
-    
-    
-    
-      
-      
-      
-      
-        <h2>2016</h2>
-      
-      <li class="post-item">
-        
-    <div class="meta">
-        <time datetime="2016-03-26T15:27:26.000Z" itemprop="datePublished">2016-03-26</time>
-    </div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+    <section id="search">
+  <form>
+    <input type="text" class="search-input" id="search-input" placeholder="Search...">
+  </form>
+  <div id="search-result"></div>
+  <p class="search-no-result">No results found.</p>
+</section>
 
-
-        <span>
-    
-        <a class="" href="/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/">MyBatis打印sql日志(Spring+MyBatis)</a>
-    
-
-
-</span>
-      </li>
-    
-  </ul>
+  
   
 
-</div>
+  <div class="content" itemprop="articleBody">
+    
+  </div>
+</article>
 
     </div>
     
@@ -144,6 +131,35 @@
 <script src="/js/main.js"></script>
 <!-- search -->
 
+  <script src="/js/search.js"></script>
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input");
+    var $resultArea = $("#search-result");
+
+    inputArea.onfocus = function() {
+      var search_path = "search.xml";
+      if (search_path.length == 0) {
+        search_path = "search.xml";
+      }
+      var path = "/" + search_path;
+      searchFunc(path, 'search-input', 'search-result');
+    }
+
+    inputArea.onkeydown = function(){
+        if(event.keyCode==13){
+            return false
+        }
+    }
+
+    $resultArea.bind("DOMNodeRemoved DOMNodeInserted", function(e) {
+        if (!$(e.target).text()) {
+            $(".search-no-result").show(200);
+        } else {
+            $(".search-no-result").hide();
+        }
+    })
+  </script>
+
 <!-- Google Analytics -->
 
 <!-- Baidu Analytics -->
@@ -167,7 +183,7 @@
             var dsq = document.createElement('script');
             dsq.type = 'text/javascript';
             dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         }());
     </script>

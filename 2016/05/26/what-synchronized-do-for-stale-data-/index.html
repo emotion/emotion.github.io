@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Emotion">
 <meta property="og:description" content="对于使用同一个锁的sync block，block之前和之中进行的数据修改，在block块结束之后，都可以在其它线程的sync block中可见。原理应该是和volatile类似，volatile是在数据写入的时候，将数据写入main memory中，并且同时将cpu其它core的这个数据的cache置失效而sync在结束之后，会将线程所在的core的cache的stale data都写入main">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-04-06T02:52:50.064Z">
+<meta property="og:updated_time" content="2018-04-06T04:09:57.998Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="what synchronized do for stale data?">
 <meta name="twitter:description" content="对于使用同一个锁的sync block，block之前和之中进行的数据修改，在block块结束之后，都可以在其它线程的sync block中可见。原理应该是和volatile类似，volatile是在数据写入的时候，将数据写入main memory中，并且同时将cpu其它core的这个数据的cache置失效而sync在结束之后，会将线程所在的core的cache的stale data都写入main">
@@ -57,11 +57,9 @@
          
           <li><a href="/">Home</a></li>
          
-          <li><a href="/categories/">Categories</a></li>
-         
-          <li><a href="/tags/">Tags</a></li>
-         
           <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/Search/">Search</a></li>
          
           <li><a href="/about/">About</a></li>
         
@@ -155,6 +153,12 @@
   </div>
 </article>
 
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
 
 
     </div>
@@ -167,11 +171,9 @@
          
           <li><a href="/">Home</a></li>
          
-          <li><a href="/categories/">Categories</a></li>
-         
-          <li><a href="/tags/">Tags</a></li>
-         
           <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/Search/">Search</a></li>
          
           <li><a href="/about/">About</a></li>
         
@@ -219,11 +221,9 @@
          
           <li><a href="/">Home</a></li>
          
-          <li><a href="/categories/">Categories</a></li>
-         
-          <li><a href="/tags/">Tags</a></li>
-         
           <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/Search/">Search</a></li>
          
           <li><a href="/about/">About</a></li>
         
@@ -248,6 +248,28 @@
 
 <!-- Baidu Analytics -->
 
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?4be1e6db27f5379d44b7b72a005394f2";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
 <!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'emotion.github.io';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
 
 
