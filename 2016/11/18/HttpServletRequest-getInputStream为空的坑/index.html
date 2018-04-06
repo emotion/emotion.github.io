@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="HttpServletRequest getInputStream为空的坑问题：在用HttpClient做HttpServletRequest的代理的时候，有时候需要用到getInputStream来获取HttpServletRequest对应请求的请求Body中的内容进行转发。但是在实际的使用过程中，出现了点问题，代理的行为并没有完全符合期望。 通过Debug手段、HttpClient的Debu">
+<meta name="keywords" content="Java,Proxy，HttpServletRequest，InputStream">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HttpServletRequest getInputStream为空的坑">
+<meta property="og:url" content="http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/index.html">
+<meta property="og:site_name" content="Emotion">
+<meta property="og:description" content="HttpServletRequest getInputStream为空的坑问题：在用HttpClient做HttpServletRequest的代理的时候，有时候需要用到getInputStream来获取HttpServletRequest对应请求的请求Body中的内容进行转发。但是在实际的使用过程中，出现了点问题，代理的行为并没有完全符合期望。 通过Debug手段、HttpClient的Debu">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-06T02:52:36.662Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HttpServletRequest getInputStream为空的坑">
+<meta name="twitter:description" content="HttpServletRequest getInputStream为空的坑问题：在用HttpClient做HttpServletRequest的代理的时候，有时候需要用到getInputStream来获取HttpServletRequest对应请求的请求Body中的内容进行转发。但是在实际的使用过程中，出现了点问题，代理的行为并没有完全符合期望。 通过Debug手段、HttpClient的Debu">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>HttpServletRequest getInputStream为空的坑</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/01/15/tomcat-报错没有详细日志/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/05/26/what-synchronized-do-for-stale-data-/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&text=HttpServletRequest getInputStream为空的坑"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&is_video=false&description=HttpServletRequest getInputStream为空的坑"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HttpServletRequest getInputStream为空的坑&body=Check out this article: http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&name=HttpServletRequest getInputStream为空的坑&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HttpServletRequest-getInputStream为空的坑"><span class="toc-number">1.</span> <span class="toc-text">HttpServletRequest getInputStream为空的坑</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        HttpServletRequest getInputStream为空的坑
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Emotion</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2016-11-18T14:34:53.000Z" itemprop="datePublished">2016-11-18</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Java/">Java</a>, <a class="tag-link" href="/tags/Proxy，HttpServletRequest，InputStream/">Proxy，HttpServletRequest，InputStream</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="HttpServletRequest-getInputStream为空的坑"><a href="#HttpServletRequest-getInputStream为空的坑" class="headerlink" title="HttpServletRequest getInputStream为空的坑"></a>HttpServletRequest getInputStream为空的坑</h2><p><strong>问题：在用HttpClient做HttpServletRequest的代理的时候，有时候需要用到getInputStream来获取HttpServletRequest对应请求的请求Body中的内容进行转发。但是在实际的使用过程中，出现了点问题，代理的行为并没有完全符合期望。</strong></p>
+<p>通过Debug手段、HttpClient的Debug日志和打印Request body内容等方式，定位到HttpServletRequest.getInputStream 获取到的内容总是为空。<br>排查整个Http Request的整个流程：</p>
+<ol>
+<li>用户访问页面或者进行某个操作</li>
+<li>浏览器发送Http请求-&gt;Nginx(Tengine)接收到请求，清洗流量，转发给后端tomcat</li>
+<li>tomcat接受到请求，对请求进行包装成为ServletRequest（对于我们来说，一般可以转换为HttpServletRequest）</li>
+<li>HttpServletRequest经历web.xml配置里面的Filter和Servlet的处理。<ul>
+<li>首先我通过浏览器的Network查看请求的内容，可以发现request的body是有内容的，所以流程1和2是没有问题的。Nginx中并没有进行什么深度的定制和配置，所以我们可以先假定这一段是没有问题的。那么问题应该是出现在流程是，ServletRequest经过Filter和Servlet之后，InputStream就没有内容了。</li>
+<li>回想到InputStream的一个特性（大部分时候都是这样），InputStream既然名字为Stream，那么它在被读取之后，是不能够再被读取的（即不能被反复被读取）</li>
+<li>所以现在可以假设InputStream是被那个地方读取过，所以导致了InputStream没有内容了。但是按照我的代码，并没有其它地方有getInputStream这个操作了，所以只能从其它方面找。</li>
+<li>又回想起当我们POST一个请求的时候，一般来说参数是在POST请求的body里面的，body的ContentType为application/x-www-form-urlencoded（即普通form表单的参数形式，按照url中的参数那种方式进行encode），而如果HttpServletRequest.getParameter(),即从POST请求中获取参数的时候，是肯定会去获取body的参数的。那么问题来了，它是怎么获取body的参数的呢？很明显它需要通过InputStream，才能读取到body的内容。</li>
+<li>所以结合上面两点我们可以推测：既然我们既可以getInputStream和getParameter，所以如果用户没有调用getParameter，那么HttpServletRequest是不会去读取InputStream的，那么我们可以通过getInputStream获取到request的body；而如果调用了getParameter，那么HttpServletRequest就会去解析InputStream获取参数的内容，从而导致在获取InputStream的时候，里面已经没有内容可以读了，所以就会出现RequestBody内容为空的问题。</li>
+<li>通过将所有会调用getParameter的Filter都调整到ProxyFilter之后，代理的行为正常了，然后通过查看HttpServletRequest.getParameter的代码，可以看到起读取InputStream内容的代码。所以可以验证我的推测是正确的。</li>
+</ul>
+</li>
+</ol>
+<p><strong>以上，如果想使用HttpServletRequest.getInputStream，那么在之前一定不能调用getParameter，因为它会去解析InputStream，而导致getInputStream的时候InputStream中已经没有内容了。</strong></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HttpServletRequest-getInputStream为空的坑"><span class="toc-number">1.</span> <span class="toc-text">HttpServletRequest getInputStream为空的坑</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&text=HttpServletRequest getInputStream为空的坑"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&is_video=false&description=HttpServletRequest getInputStream为空的坑"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HttpServletRequest getInputStream为空的坑&body=Check out this article: http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&title=HttpServletRequest getInputStream为空的坑"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/11/18/HttpServletRequest-getInputStream为空的坑/&name=HttpServletRequest getInputStream为空的坑&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 Emotion
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

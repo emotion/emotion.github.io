@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="quartz startAtNow 延时30秒的坑首先介绍一下背景，工作中需要开发一个可能包含定时功能的一个调度系统。 既然是需要定时功能，很自然的变想到引入quartz做定时器。而在使用quartz的时候发现了quartz中的其中一些功能，比如：  quartz有cluster的模式，可以用在集群里面 quartz的trigger有startAtNow的功能 有函数名可以看出来就是可以马上触发一">
+<meta name="keywords" content="Java,Quartz,坑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="quartz startAtNow 延时30秒的坑">
+<meta property="og:url" content="http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/index.html">
+<meta property="og:site_name" content="Emotion">
+<meta property="og:description" content="quartz startAtNow 延时30秒的坑首先介绍一下背景，工作中需要开发一个可能包含定时功能的一个调度系统。 既然是需要定时功能，很自然的变想到引入quartz做定时器。而在使用quartz的时候发现了quartz中的其中一些功能，比如：  quartz有cluster的模式，可以用在集群里面 quartz的trigger有startAtNow的功能 有函数名可以看出来就是可以马上触发一">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-06T02:56:12.541Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="quartz startAtNow 延时30秒的坑">
+<meta name="twitter:description" content="quartz startAtNow 延时30秒的坑首先介绍一下背景，工作中需要开发一个可能包含定时功能的一个调度系统。 既然是需要定时功能，很自然的变想到引入quartz做定时器。而在使用quartz的时候发现了quartz中的其中一些功能，比如：  quartz有cluster的模式，可以用在集群里面 quartz的trigger有startAtNow的功能 有函数名可以看出来就是可以马上触发一">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>quartz startAtNow 延时30秒的坑</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/12/01/header-with-underline-name-in-nginx/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/01/15/ServletRequest和HttpServletRequest-/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&text=quartz startAtNow 延时30秒的坑"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&is_video=false&description=quartz startAtNow 延时30秒的坑"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=quartz startAtNow 延时30秒的坑&body=Check out this article: http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&name=quartz startAtNow 延时30秒的坑&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#quartz-startAtNow-延时30秒的坑"><span class="toc-number">1.</span> <span class="toc-text">quartz startAtNow 延时30秒的坑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#接下来通过quartz的代码问题实际出在哪里。"><span class="toc-number">1.1.</span> <span class="toc-text">接下来通过quartz的代码问题实际出在哪里。</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        quartz startAtNow 延时30秒的坑
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Emotion</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2017-12-01T15:27:51.000Z" itemprop="datePublished">2017-12-01</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Java/">Java</a>, <a class="tag-link" href="/tags/Quartz/">Quartz</a>, <a class="tag-link" href="/tags/坑/">坑</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="quartz-startAtNow-延时30秒的坑"><a href="#quartz-startAtNow-延时30秒的坑" class="headerlink" title="quartz startAtNow 延时30秒的坑"></a>quartz startAtNow 延时30秒的坑</h2><p>首先介绍一下背景，工作中需要开发一个可能包含定时功能的一个调度系统。</p>
+<p>既然是需要定时功能，很自然的变想到引入quartz做定时器。而在使用quartz的时候发现了quartz中的其中一些功能，比如：</p>
+<ul>
+<li>quartz有cluster的模式，可以用在集群里面</li>
+<li>quartz的trigger有startAtNow的功能<ul>
+<li>有函数名可以看出来就是可以马上触发一个任务的功能，而这个就是遇到延时坑的原因</li>
+</ul>
+</li>
+</ul>
+<p>另外在调度系统中：</p>
+<ul>
+<li>我们需要一个消息队列来分发任务，而且考虑到后续扩容的需求，这个消息队列还需要可以满足调度系统组件集群的要求（quartz的cluster马上浮现在眼前）</li>
+<li>既然是调度任务，就会有可能出现节点失败重试的情况，重试的时候就需要延时几秒几分钟再重试（quartz的定时功能+设置只执行一次又满足了功能上的要求）</li>
+</ul>
+<p>既然quartz满足了功能上调度系统分发任务的要求，那么开发的时候就先直接在quartz上直接开发调度系统了，调度系统也能正常工作。但是在实际使用的时候，使用者反映任务执行的时间过长，需要缩短时间，中间检查的过程不表，最后发现一个任务startAtNow之后，总是延迟大概30秒后任务才会调度起来。</p>
+<p>那么就开始检查问题，按照quartz的数据库表设计，可以大概知道quartz的整个设计</p>
+<ul>
+<li>quartz的startAtNow设置的时间是系统的System.currentTimeMillis()，那么很明显这样设计可能会由于调度系统机器之间的时间不同步而导致调度系统出现异常的情况。（我在日常环境测试的时候，多台机器部署起来也遇到过这个问题）<ul>
+<li>我只部署一台机器也会出现这个问题。</li>
+<li>我详细检查了startAtNow之后，数据库中存储的时间，发现时间并没有问题，fireTime和机器上的时间是同步的</li>
+<li>所以并不是这里出了问题。</li>
+</ul>
+</li>
+<li>quartz里面有个checkinInterval的配置，顾名思义，就是quartz进行心跳检查的一个时间间隔<ul>
+<li>按照quartz的设计，是需要一个轮询数据库获取触发任务的过程的，那么轮询数据库需要一个时间间隔，要不然当没有任务触发的时候，会导致过于频繁的数据库查询而出问题</li>
+<li>所以我猜想这个checkinInterval也是控制轮询数据库时间间隔的设置</li>
+<li>但是通过设置checkinInterval为一秒之后，问题还是这样，没有任何效果。所以checkinInterval并不能控制轮询的时间间隔</li>
+</ul>
+</li>
+<li>到了这里，那就只能是quartz的设计问题了，按照quartz定时任务的定位，可以猜到这很可能是缓存的问题，而这个缓存是为了任务能够在时间点上直接触发，而不是当任务时间点到了才去轮询-&gt;查询到要触发的任务-&gt;集群机器争用抢锁-&gt;延迟一定的时候后触发<ul>
+<li>所以quartz的设计应该是（后续查看代码也证实了）轮询的时候是获取之后一定时间内会触发的任务，然后这些任务会保存在内存中，直到任务所对应的触发时间到达之后马上触发，由此轮询的时间间隔是和获取任务的时间窗口是相关的（很可能是相同的）</li>
+<li>按照这个设计，如果startAtNow的话，由于存在轮询的时间间隔（很可能是30秒），所以导致startAtNow之后会延时30秒</li>
+</ul>
+</li>
+</ul>
+<h3 id="接下来通过quartz的代码问题实际出在哪里。"><a href="#接下来通过quartz的代码问题实际出在哪里。" class="headerlink" title="接下来通过quartz的代码问题实际出在哪里。"></a>接下来通过quartz的代码问题实际出在哪里。</h3><ul>
+<li>那么首先是应该查看哪些代码来看问题出现在哪里。首先从github上pull quartz的代码，并且导入到IDEA中。</li>
+<li>然后我们需要知道，我们要查看的代码是quartz轮询的部分，那么轮询的部分是在哪里呢。按照quartz的设计，需要执行的Job是需要implement一个接口的：org.quartz.Job，而这个接口只有一个函数定义：org.quartz.Job#execute，那么我们可以知道quartz肯定是在循环的哪里调用了这个接口</li>
+<li>接着查找这个接口在哪里进行了调用，可以找到只有一个地方：org/quartz/core/JobRunShell.java:202，org.quartz.core.JobRunShell#run。在方法体里面我们没有看到轮询，那么还需要往更上层查找。既然是run方法，再看类是否继承了Thread或者实现了Runnable接口，可以知道这个类很可能是会被丢到线程池里面执行的，那么我们就需要另外的方法去查找引用的地方，我找到了一个很可能的函数org.quartz.core.JobRunShell#initialize</li>
+<li>查找使用了这个函数的地方可以找到：org/quartz/core/QuartzSchedulerThread.java:392， org.quartz.core.QuartzSchedulerThread#run  我们可以看到这里有一个轮询，所以这里应该就是需要找的地方了。</li>
+<li><p>然后查看这段代码，可以发现末尾有一段代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> now = System.currentTimeMillis();</span><br><span class="line"><span class="keyword">long</span> waitTime = now + getRandomizedIdleWaitTime();</span><br><span class="line"><span class="keyword">long</span> timeUntilContinue = waitTime - now;</span><br><span class="line"><span class="keyword">synchronized</span> (sigLock) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!halted.get()) &#123;</span><br><span class="line">            <span class="comment">// QTZ-336 A job might have been completed in the mean time and we might have</span></span><br><span class="line">            <span class="comment">// missed the scheduled changed signal by not waiting for the notify() yet</span></span><br><span class="line">            <span class="comment">// Check that before waiting for too long in case this very job needs to be</span></span><br><span class="line">            <span class="comment">// scheduled very soon</span></span><br><span class="line">            <span class="keyword">if</span> (!isScheduleChanged()) &#123;</span><br><span class="line">                sigLock.wait(timeUntilContinue);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException ignore) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以看到这一段代码会让轮询睡眠getRandomizedIdleWaitTime()的时间，而这个睡眠时间可以看到是接近30秒的，由此可以知道，导致这个startAtNow延时的地方就是这个idleWaitTime。这里有一个setIdleWaitTime方法，所以可以猜测到quartz有一个设置idleWaitTime的配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// When the scheduler finds there is no current trigger to fire, how long</span></span><br><span class="line"><span class="comment">// it should wait until checking again...</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> DEFAULT_IDLE_WAIT_TIME = <span class="number">30L</span> * <span class="number">1000L</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">long</span> idleWaitTime = DEFAULT_IDLE_WAIT_TIME;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> idleWaitVariablness = <span class="number">7</span> * <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setIdleWaitTime</span><span class="params">(<span class="keyword">long</span> waitTime)</span> </span>&#123;</span><br><span class="line">    idleWaitTime = waitTime;</span><br><span class="line">    idleWaitVariablness = (<span class="keyword">int</span>) (waitTime * <span class="number">0.2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">long</span> <span class="title">getRandomizedIdleWaitTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> idleWaitTime - random.nextInt(idleWaitVariablness);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>至此，已经找到了quartz startAtNow的问题已经解决办法了，不过我已经另外自己仿照quartz写了一套有延时触发机制的简单消息队列了，主要考虑的问题是：</p>
+</li>
+<li>调度系统后续不怎么需要定时功能，而且引入quartz之后，有各种不可控因素，比如这个idleWaitTime这种不怎么用得到的配置</li>
+<li>quartz使用的是机器的System.currentTimeMillis作为触发时间，集群模式下各台机器需要同步时间，这在部署的时候可能会出现坑</li>
+<li>自己实现可以抛弃Job和Trigger分离等各种对于调度系统来说冗余的设计，使得消息队列更容易控制。</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#quartz-startAtNow-延时30秒的坑"><span class="toc-number">1.</span> <span class="toc-text">quartz startAtNow 延时30秒的坑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#接下来通过quartz的代码问题实际出在哪里。"><span class="toc-number">1.1.</span> <span class="toc-text">接下来通过quartz的代码问题实际出在哪里。</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&text=quartz startAtNow 延时30秒的坑"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&is_video=false&description=quartz startAtNow 延时30秒的坑"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=quartz startAtNow 延时30秒的坑&body=Check out this article: http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&title=quartz startAtNow 延时30秒的坑"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/12/01/quartz-startAtNow延时30秒的坑/&name=quartz startAtNow 延时30秒的坑&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 Emotion
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

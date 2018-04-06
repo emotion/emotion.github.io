@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置 首先MyBatis的配置（注：中文的文档里面没有这些）：http://mybatis.org/mybatis-3/logging.html 在spring的sqlSessionFactory中配置mybatis的配置的位置 mybatis-config.xml这个配置文件可以扩展MyBatis的一些配置，而不用首先与s">
+<meta name="keywords" content="Java,Spring,MyBatis,Log4j,Logging">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis打印sql日志(Spring+MyBatis)">
+<meta property="og:url" content="http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/index.html">
+<meta property="og:site_name" content="Emotion">
+<meta property="og:description" content="MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置 首先MyBatis的配置（注：中文的文档里面没有这些）：http://mybatis.org/mybatis-3/logging.html 在spring的sqlSessionFactory中配置mybatis的配置的位置 mybatis-config.xml这个配置文件可以扩展MyBatis的一些配置，而不用首先与s">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-06T02:52:15.151Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis打印sql日志(Spring+MyBatis)">
+<meta name="twitter:description" content="MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置 首先MyBatis的配置（注：中文的文档里面没有这些）：http://mybatis.org/mybatis-3/logging.html 在spring的sqlSessionFactory中配置mybatis的配置的位置 mybatis-config.xml这个配置文件可以扩展MyBatis的一些配置，而不用首先与s">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>MyBatis打印sql日志(Spring+MyBatis)</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016/05/26/what-synchronized-do-for-stale-data-/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&text=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&is_video=false&description=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MyBatis打印sql日志(Spring+MyBatis)&body=Check out this article: http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&name=MyBatis打印sql日志(Spring+MyBatis)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置"><span class="toc-number">1.</span> <span class="toc-text">MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        MyBatis打印sql日志(Spring+MyBatis)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Emotion</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2016-03-26T15:27:26.000Z" itemprop="datePublished">2016-03-26</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Java/">Java</a>, <a class="tag-link" href="/tags/Log4j/">Log4j</a>, <a class="tag-link" href="/tags/Logging/">Logging</a>, <a class="tag-link" href="/tags/MyBatis/">MyBatis</a>, <a class="tag-link" href="/tags/Spring/">Spring</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置"><a href="#MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置" class="headerlink" title="MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置"></a>MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置</h2><ul>
+<li>首先MyBatis的配置（注：中文的文档里面没有这些）：<a href="http://mybatis.org/mybatis-3/logging.html" target="_blank" rel="noopener">http://mybatis.org/mybatis-3/logging.html</a><ul>
+<li>在spring的sqlSessionFactory中配置mybatis的配置的位置<ul>
+<li>mybatis-config.xml这个配置文件可以扩展MyBatis的一些配置，而不用首先与spring的固有格式    </li>
+<li>在mybatis-config.xml里面配置好MyBatis日志的实现方式<ul>
+<li>MyBatis支持的日志实现有：SLF4J、Apache Commons Logging、Log4j 2、Log4j、JDK logging，但这里只展示log4j的配置</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring的配置</span><br><span class="line"></span><br><span class="line">    &lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;</span><br><span class="line">        ***</span><br><span class="line">        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:spring/mybatis-config.xml&quot;/&gt;</span><br><span class="line">        ***</span><br><span class="line">    &lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mybati-config.xml的配置</span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE configuration</span><br><span class="line">        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;settings&gt;</span><br><span class="line">    	***</span><br><span class="line">        &lt;setting name=&quot;logImpl&quot; value=&quot;LOG4J&quot;/&gt;</span><br><span class="line">        ***</span><br><span class="line">    &lt;/settings&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Log4j的配置<ul>
+<li><a href="https://logging.apache.org/log4j/1.2/manual.html" target="_blank" rel="noopener">https://logging.apache.org/log4j/1.2/manual.html</a></li>
+<li>按Log4j的文档，其配置主要有：Loggers、Appenders和Layouts</li>
+<li>其中Appenders和Layouts都可以copy别人的代码再对其进行修改来进行配置，下面是我的其中一个appender的配置，也是用于MyBatis的sql日志的配置。<ul>
+<li>需要注意的配置有encoding，日志的编码</li>
+<li>threshold，这个appender会记录的日志的level<ul>
+<li>日志的level有：TRACE,DEBUG,INFO,WARN,ERROR and FATAL</li>
+</ul>
+</li>
+<li>layout配置，打印日志的格式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">log4j的appender配置</span><br><span class="line"></span><br><span class="line">&lt;appender name=&quot;DEBUG-APPENDER&quot; class=&quot;org.apache.log4j.DailyRollingFileAppender&quot;&gt;</span><br><span class="line">        &lt;param name=&quot;file&quot; value=&quot;/Users/emotion/logs/applog/debug.log&quot;/&gt;</span><br><span class="line">        &lt;param name=&quot;append&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;param name=&quot;encoding&quot; value=&quot;UTF-8&quot;/&gt;</span><br><span class="line">        &lt;param name=&quot;threshold&quot; value=&quot;DEBUG&quot;/&gt;</span><br><span class="line">        &lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;</span><br><span class="line">            &lt;param name=&quot;ConversionPattern&quot;</span><br><span class="line">                   value=&quot;%d [%X&#123;requestURIWithQueryString&#125;]%n  SQL：  %-5p %c&#123;2&#125; - %m%n&quot;/&gt;</span><br><span class="line">        &lt;/layout&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>接着<ul>
+<li>logger的配置</li>
+<li>我们可以将logger看做一棵树，其中root节点是所有日志都会汇入<root>节点的appender中</root></li>
+<li>当我们定义了logger之后，以logger的name作为package或者class，在这个package之下的class或者这个class的日志会使用这个特别定制的appender</li>
+<li>这样我们就可以将我们需要分离出来的日志，单独做一个appender，避免和其它文件混合在一起而导致很难查找了。</li>
+<li>在logger中的name为package或者class</li>
+<li>level就是记录的日志的等级</li>
+<li>appender-ref则是这个日志流会流向的appender引用</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;root&gt;</span><br><span class="line">        &lt;level value=&quot;INFO&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;PROJECT&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;JmonitorAppender&quot;/&gt;</span><br><span class="line">    &lt;/root&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">log4j的logger配置</span><br><span class="line"></span><br><span class="line">   &lt;logger name=&quot;org.apache.ibatis&quot; additivity=&quot;true&quot;&gt;</span><br><span class="line">        &lt;level value=&quot;DEBUG&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;</span><br><span class="line">    &lt;/logger&gt;</span><br><span class="line">    &lt;logger name=&quot;java.sql.Statement&quot; additivity=&quot;true&quot;&gt;</span><br><span class="line">        &lt;level value=&quot;DEBUG&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;</span><br><span class="line">    &lt;/logger&gt;</span><br><span class="line">    &lt;logger name=&quot;java.sql&quot; additivity=&quot;true&quot;&gt;</span><br><span class="line">        &lt;level value=&quot;DEBUG&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;</span><br><span class="line">    &lt;/logger&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>总结<ul>
+<li>首先在MyBatis中定义logImpl，这样就可以让MyBatis的日志机制正常工作</li>
+<li>在log4j中配置好level为debug的appender和logger，这样就可以让应用的日志系统正常的记录MyBatis的日志到配置的文件里面了。</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置"><span class="toc-number">1.</span> <span class="toc-text">MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&text=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&is_video=false&description=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MyBatis打印sql日志(Spring+MyBatis)&body=Check out this article: http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&title=MyBatis打印sql日志(Spring+MyBatis)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/&name=MyBatis打印sql日志(Spring+MyBatis)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 Emotion
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

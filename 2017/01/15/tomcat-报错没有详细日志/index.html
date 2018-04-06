@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="在使用tomcat的时候，tomcat启动有时会遇到这样的一个错误日志1SEVERE: One or more listeners failed to start. Full details will be found in the appropriate container log file 但是详细的错误信息并没有一起打印出来，这种情况要怎么办呢？  首先应该按照指示，去检查其它的log文件，">
+<meta name="keywords" content="Java,Tomcat,日志,报错">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tomcat报错没有详细日志的解决办法">
+<meta property="og:url" content="http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/index.html">
+<meta property="og:site_name" content="Emotion">
+<meta property="og:description" content="在使用tomcat的时候，tomcat启动有时会遇到这样的一个错误日志1SEVERE: One or more listeners failed to start. Full details will be found in the appropriate container log file 但是详细的错误信息并没有一起打印出来，这种情况要怎么办呢？  首先应该按照指示，去检查其它的log文件，">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-06T02:57:18.482Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tomcat报错没有详细日志的解决办法">
+<meta name="twitter:description" content="在使用tomcat的时候，tomcat启动有时会遇到这样的一个错误日志1SEVERE: One or more listeners failed to start. Full details will be found in the appropriate container log file 但是详细的错误信息并没有一起打印出来，这种情况要怎么办呢？  首先应该按照指示，去检查其它的log文件，">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Tomcat报错没有详细日志的解决办法</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/01/15/ServletRequest和HttpServletRequest-/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/11/18/HttpServletRequest-getInputStream为空的坑/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&text=Tomcat报错没有详细日志的解决办法"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&is_video=false&description=Tomcat报错没有详细日志的解决办法"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Tomcat报错没有详细日志的解决办法&body=Check out this article: http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&name=Tomcat报错没有详细日志的解决办法&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Tomcat报错没有详细日志的解决办法
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Emotion</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2017-01-14T18:40:00.000Z" itemprop="datePublished">2017-01-15</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Java/">Java</a>, <a class="tag-link" href="/tags/Tomcat/">Tomcat</a>, <a class="tag-link" href="/tags/报错/">报错</a>, <a class="tag-link" href="/tags/日志/">日志</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>在使用tomcat的时候，tomcat启动有时会遇到这样的一个错误日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SEVERE: One or more listeners failed to start. Full details will be found in the appropriate container log file</span><br></pre></td></tr></table></figure></p>
+<p>但是详细的错误信息并没有一起打印出来，这种情况要怎么办呢？</p>
+<ul>
+<li>首先应该按照指示，去检查其它的log文件，看看有没有对应的Exception打印出来</li>
+<li>如果没有的话，那么表示这些日志默认是不打印的。通过搜索可以找到下一步的解决办法<br><a href="https://jaykhimani.blogspot.com/2016/12/tomcat-one-or-more-listeners-failed-to.html" target="_blank" rel="noopener">https://jaykhimani.blogspot.com/2016/12/tomcat-one-or-more-listeners-failed-to.html</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Whenever you face with this error, under your WEB-INF/classes directory, create file logging.properties with the following content and restart the tomcat server.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在应用目录对应的WEB-INF/classes下面创建logging.properties，并把如下内容填入。<br>下面的配置内容是将tomcat容器的打印日志等级调为INFO，并且日志的handler设置为java.util.logging.ConsoleHandler，即打印到控制台上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].level=INFO</span><br><span class="line">org.apache.catalina.core.ContainerBase.[Catalina].handlers=java.util.logging.ConsoleHandler</span><br></pre></td></tr></table></figure></p>
+<p>重启tomcat，到这一步一般情况下都能够获取到启动时候的错误信息了。</p>
+<ul>
+<li>但是还是会出现日志还是没有的情况，那么很可能日志系统的配置是有问题的，排查的方法如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep tomcat</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>首先通过命令查找对应tomcat实例，并获得其启动命令，如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/jvm/jre/bin/java -classpath /usr/share/tomcat/bin/bootstrap.jar:/usr/share/tomcat/bin/tomcat-juli.jar:/usr/share/java/commons-daemon.jar -Dcatalina.base=/usr/share/tomcat -Dcatalina.home=/usr/share/tomcat -Djava.endorsed.dirs= -Djava.io.tmpdir=/var/cache/tomcat/temp -Djava.util.logging.config.file=/usr/share/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager org.apache.catalina.startup.Bootstrap start</span><br></pre></td></tr></table></figure></p>
+<p>由于之前修改的logging.properties是将日志打印到控制台中，所以我们可以将tomcat stop，然后使用以上命令，在控制台上启动tomcat，如果出现错误的话，错误信息就会输出到控制台上了。</p>
+<ul>
+<li><p>这个时候可能还会遇到一个问题，手动启动是能够正常启动的，但是通过systemctl启动会启动失败，那么可以试试在命令之前加上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u tomcat</span><br></pre></td></tr></table></figure>
+<p>即：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u tomcat /usr/lib/jvm/jre/bin/java -classpath /usr/share/tomcat/bin/bootstrap.jar:/usr/share/tomcat/bin/tomcat-juli.jar:/usr/share/java/commons-daemon.jar -Dcatalina.base=/usr/share/tomcat -Dcatalina.home=/usr/share/tomcat -Djava.endorsed.dirs= -Djava.io.tmpdir=/var/cache/tomcat/temp -Djava.util.logging.config.file=/usr/share/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager org.apache.catalina.startup.Bootstrap start</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>由于使用命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start tomcat</span><br></pre></td></tr></table></figure></p>
+<p>启动tomcat的时候，是以tomcat用户启动的tomcat实例，而一般我们登录机器的时候，并不是以tomcat用户启动的，这会使启动tomcat实例的用户权限不同，而出现的问题也会不同，通过sudo -u tomcat可以通过tomcat用户执行对应的命令。</p>
+<p>我最终查到的结果是</p>
+<ul>
+<li>因为依赖的库中有一个log4j2.xml配置文件，log4j2.xml与应用的日志配置冲突了，导致错误信息（所有应用的日志）并没有打印到对应的日志文件中。加了logging.properties之后，由于日志配置问题，控制台的日志信息并没有落入日志文件中。</li>
+<li>另外其所配置的日志路径是相对路径，而tomcat用户没有对应的路径的文件权限，所以会报Exception导致tomcat启动失败</li>
+</ul>
+<p>所以配置好logging.propertie后，通过tomat用户在控制台上手动启动tomcat，就可以将控制台的日志（tomcat的启动的日志）打印出来了。由此可以知道具体的Exception信息。</p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&text=Tomcat报错没有详细日志的解决办法"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&is_video=false&description=Tomcat报错没有详细日志的解决办法"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Tomcat报错没有详细日志的解决办法&body=Check out this article: http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&title=Tomcat报错没有详细日志的解决办法"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/01/15/tomcat-报错没有详细日志/&name=Tomcat报错没有详细日志的解决办法&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 Emotion
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

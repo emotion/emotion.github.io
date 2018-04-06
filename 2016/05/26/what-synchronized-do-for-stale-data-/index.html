@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="对于使用同一个锁的sync block，block之前和之中进行的数据修改，在block块结束之后，都可以在其它线程的sync block中可见。原理应该是和volatile类似，volatile是在数据写入的时候，将数据写入main memory中，并且同时将cpu其它core的这个数据的cache置失效而sync在结束之后，会将线程所在的core的cache的stale data都写入main">
+<meta name="keywords" content="Java,CPU,Cache,Stale Data,Synchronized">
+<meta property="og:type" content="article">
+<meta property="og:title" content="what synchronized do for stale data?">
+<meta property="og:url" content="http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/index.html">
+<meta property="og:site_name" content="Emotion">
+<meta property="og:description" content="对于使用同一个锁的sync block，block之前和之中进行的数据修改，在block块结束之后，都可以在其它线程的sync block中可见。原理应该是和volatile类似，volatile是在数据写入的时候，将数据写入main memory中，并且同时将cpu其它core的这个数据的cache置失效而sync在结束之后，会将线程所在的core的cache的stale data都写入main">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-06T02:52:50.064Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="what synchronized do for stale data?">
+<meta name="twitter:description" content="对于使用同一个锁的sync block，block之前和之中进行的数据修改，在block块结束之后，都可以在其它线程的sync block中可见。原理应该是和volatile类似，volatile是在数据写入的时候，将数据写入main memory中，并且同时将cpu其它core的这个数据的cache置失效而sync在结束之后，会将线程所在的core的cache的stale data都写入main">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>what synchronized do for stale data?</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016/11/18/HttpServletRequest-getInputStream为空的坑/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/03/26/MyBatis打印sql日志(Spring+MyBatis)/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&text=what synchronized do for stale data?"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&is_video=false&description=what synchronized do for stale data?"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=what synchronized do for stale data?&body=Check out this article: http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&name=what synchronized do for stale data?&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        what synchronized do for stale data?
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Emotion</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2016-05-26T15:27:51.000Z" itemprop="datePublished">2016-05-26</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/CPU/">CPU</a>, <a class="tag-link" href="/tags/Cache/">Cache</a>, <a class="tag-link" href="/tags/Java/">Java</a>, <a class="tag-link" href="/tags/Stale-Data/">Stale Data</a>, <a class="tag-link" href="/tags/Synchronized/">Synchronized</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>对于使用同一个锁的sync block，block之前和之中进行的数据修改，在block块结束之后，都可以在其它线程的sync block中可见。<br>原理应该是和volatile类似，volatile是在数据写入的时候，将数据写入main memory中，并且同时将cpu其它core的这个数据的cache置失效<br>而sync在结束之后，会将线程所在的core的cache的stale data都写入main memory中，同时会将其它core的这些stale data对应的cache置失效<br>  (ps: cache被置失效之后，下次读取该数据的时候，就必须到main memory进行读取，所以会读到最新的数据.)<br>we are java developers, we only know virtual machines, not real machines!<br>let me theorize what is happening - but I must say I don’t know what I’m talking about.<br>say thread A is running on CPU A with cache A, thread B is running on CPU B with cache B</p>
+<ul>
+<li>thread A reads y; CPU A fetches y from main memory, and saved the value in cache A.</li>
+<li>thread B assigns new value to ‘y’. VM doesn’t have to update the main memory at this point; as far as thread B is concerned, it can be reading/writing on a local image of ‘y’; maybe the ‘y’ is nothing but a cpu register.</li>
+<li>thread B exits a sync block and releases a monitor. (when and where it entered the block doesn’t matter). thread B has updated quite some variables till this point, including ‘y’. All those updates must be written to main memory now.</li>
+<li>CPU B writes the new y value to place ‘y’ in main memory. (I imagine that) almost INSTANTLY, information ‘main y is updated’ is wired to cache A, and cache A invalidate its own copy of y. That must have happened really FAST on the hardware.</li>
+<li>thread A acquires a monitor and enters a sync block - at this point it doesn’t have to do anything regarding cache A. ‘y’ has already gone from cache A. when thread A reads y again, it’s fresh from main memory with the new value assigned by B.</li>
+<li>consider another variable z, which was also cached by A in step(1), but it’s not updated by thread B in step(2). it can survive in cache A all the way to step(5). access to ‘z’ is not slowed down because of synchronization.</li>
+</ul>
+<p>if the above statements make sense, then indeed the cost isn’t very high.</p>
+<p>ref: <a href="http://stackoverflow.com/questions/1850270/memory-effects-of-synchronization-in-java" target="_blank" rel="noopener">http://stackoverflow.com/questions/1850270/memory-effects-of-synchronization-in-java</a></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&text=what synchronized do for stale data?"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&is_video=false&description=what synchronized do for stale data?"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=what synchronized do for stale data?&body=Check out this article: http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&title=what synchronized do for stale data?"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/05/26/what-synchronized-do-for-stale-data-/&name=what synchronized do for stale data?&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 Emotion
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

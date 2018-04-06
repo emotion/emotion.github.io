@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="在自己的电脑为了不再折腾Linux的桌面了，所以转到Deepin发行版按照一贯的键盘设置，需要交换CapsLock和Ctrl_L 查找到最靠谱的配置如下：（原文的配置有点问题）http://blog.csdn.net/itfcheins/article/details/48732967 12gsettings set com.deepin.dde.keybinding.mediakey capsl">
+<meta name="keywords" content="Deepin,Linux,CapsLock,Ctrl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deepin下交换CapsLock和Ctrl键">
+<meta property="og:url" content="http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/index.html">
+<meta property="og:site_name" content="Emotion">
+<meta property="og:description" content="在自己的电脑为了不再折腾Linux的桌面了，所以转到Deepin发行版按照一贯的键盘设置，需要交换CapsLock和Ctrl_L 查找到最靠谱的配置如下：（原文的配置有点问题）http://blog.csdn.net/itfcheins/article/details/48732967 12gsettings set com.deepin.dde.keybinding.mediakey capsl">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-06T02:54:31.225Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Deepin下交换CapsLock和Ctrl键">
+<meta name="twitter:description" content="在自己的电脑为了不再折腾Linux的桌面了，所以转到Deepin发行版按照一贯的键盘设置，需要交换CapsLock和Ctrl_L 查找到最靠谱的配置如下：（原文的配置有点问题）http://blog.csdn.net/itfcheins/article/details/48732967 12gsettings set com.deepin.dde.keybinding.mediakey capsl">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Deepin下交换CapsLock和Ctrl键</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2017/12/01/header-with-underline-name-in-nginx/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&text=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&is_video=false&description=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Deepin下交换CapsLock和Ctrl键&body=Check out this article: http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&name=Deepin下交换CapsLock和Ctrl键&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Deepin下交换CapsLock和Ctrl键
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Emotion</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2017-12-01T15:27:51.000Z" itemprop="datePublished">2017-12-01</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/CapsLock/">CapsLock</a>, <a class="tag-link" href="/tags/Ctrl/">Ctrl</a>, <a class="tag-link" href="/tags/Deepin/">Deepin</a>, <a class="tag-link" href="/tags/Linux/">Linux</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>在自己的电脑为了不再折腾Linux的桌面了，所以转到Deepin发行版<br>按照一贯的键盘设置，需要交换CapsLock和Ctrl_L</p>
+<p>查找到最靠谱的配置如下：（原文的配置有点问题）<br><a href="http://blog.csdn.net/itfcheins/article/details/48732967" target="_blank" rel="noopener">http://blog.csdn.net/itfcheins/article/details/48732967</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gsettings set com.deepin.dde.keybinding.mediakey capslock "[]"</span><br><span class="line">gsettings set com.deepin.dde.keyboard layout-options "['ctrl:swapcaps']"</span><br></pre></td></tr></table></figure>
+<p>不过实际使用之后发现，deepin更新之后，这个配置可能会被重置，但是均衡配置的风险、难度和可用性之后，还是继续使用这个配置。</p>
+<p>另外找到一个更危险的配置方式，是利用构建自定义键盘布局的方式配置的，不过考虑了一下还是不入这种坑了：<a href="https://help.ubuntu.com/community/Custom%20keyboard%20layout%20definitions?action=show&amp;redirect=Howto%3A+Custom+keyboard+layout+definitions" target="_blank" rel="noopener">https://help.ubuntu.com/community/Custom%20keyboard%20layout%20definitions?action=show&amp;redirect=Howto%3A+Custom+keyboard+layout+definitions</a></p>
+<p>另外网上普遍的做法都是一种一次性的配置方法，重启之后就会失效，需要自己手动执行命令，似乎重复执行还会出现问题：<br><a href="http://blog.csdn.net/xiaoqin515515/article/details/18840035" target="_blank" rel="noopener">http://blog.csdn.net/xiaoqin515515/article/details/18840035</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">使用xmodmap工具进行修改，使用man xmodmap，里面就有交换按键caplock（大小写切换键）和右ctrl键的例子，</span><br><span class="line">如果您的修改不同，可以做相应的替换即可。我就是参考这个例子对我的右Alt键和Ctrl键进行修改的。</span><br><span class="line">下面先看man自带的例子</span><br><span class="line">       ! </span><br><span class="line">       ! Swap Caps_Lock and Control_L</span><br><span class="line">       !</span><br><span class="line">       remove Lock = Caps_Lock</span><br><span class="line">       remove Control = Control_L</span><br><span class="line">       keysym Control_L = Caps_Lock</span><br><span class="line">       keysym Caps_Lock = Control_L</span><br><span class="line">       add Lock = Caps_Lock</span><br><span class="line">       add Control = Control_L</span><br><span class="line">将上面的语句写入文件，例如keymaprc，然后xmodmap keymaprc即可生效，</span><br><span class="line">因为这个是交换键的功能，如果您执行第二次的话，按键就又会恢复回来的。</span><br><span class="line">注意：这个修改只对当前有效，电脑重启会失效，得重新输入命令。</span><br><span class="line"></span><br><span class="line">下面是我自己的修改，把keymaprc命名为隐藏文件: .keymaprc，放在$HOME目录下。</span><br><span class="line">$ cat ~/.keymaprc </span><br><span class="line">remove Control = Control_R</span><br><span class="line">remove mod1 = Alt_R</span><br><span class="line">keysym Control_R = Alt_R</span><br><span class="line">keysym Alt_R = Control_R</span><br><span class="line">add Control = Control_R</span><br><span class="line">add mod1 = Alt_R</span><br><span class="line">然后执行 $ xmodmap ~/.keymaprc</span><br><span class="line">这样就生效了</span><br><span class="line"></span><br><span class="line">为了更加修改按键，不想很次都输入xmodmap ~/.keymaprc这么长的命令，可以将命令写入文本，放到$PATH路径下，下面是我的做法</span><br><span class="line">$ touch swkey</span><br><span class="line">$ echo &quot;xmodmap ~/.keymaprc&quot; &gt;  swkey</span><br><span class="line">$ chmod +x swkey</span><br><span class="line">$ sudo mv swkey /usr/bin</span><br><span class="line">$ swkey  #现在想交换两个按键就直接输入这个命令,无论在什么路径下都可以，也不用记文件路径，会比较方便</span><br><span class="line"></span><br><span class="line">备注：</span><br><span class="line">alt对就MODIFIERNAME为mod1，可以在man文档中找到其他的MODIFIERNAME，也可以直接xmodmap查看，window键应该对应mod4</span><br><span class="line">$ xmodmap </span><br><span class="line">xmodmap:  up to 4 keys per modifier, (keycodes in parentheses):</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">shift       Shift_L (0x32),  Shift_R (0x3e)</span><br><span class="line">lock        Caps_Lock (0x42)</span><br><span class="line">control     Control_L (0x25),  Control_R (0x69)</span><br><span class="line">mod1        Alt_L (0x40),  Alt_R (0x6c),  Meta_L (0xcd)</span><br><span class="line">mod2        Num_Lock (0x4d)</span><br><span class="line">mod3      </span><br><span class="line">mod4        Super_L (0x85),  Super_R (0x86),  Super_L (0xce),  Hyper_L (0xcf)</span><br><span class="line">mod5        ISO_Level3_Shift (0x5c),  Mode_switch (0xcb)</span><br></pre></td></tr></table></figure></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&text=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&is_video=false&description=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Deepin下交换CapsLock和Ctrl键&body=Check out this article: http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&title=Deepin下交换CapsLock和Ctrl键"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/12/01/Deepin下交换CapsLock和Ctrl/&name=Deepin下交换CapsLock和Ctrl键&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 Emotion
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/tags/">Tags</a></li>
+         
+          <li><a href="/archives/">Archives</a></li>
+         
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
