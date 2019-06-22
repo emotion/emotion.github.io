@@ -1,9 +1,11 @@
+
+<!DOCTYPE html>
 <html>
   <head>
     
 <meta charset="utf-8" >
 
-<title>Emotion&#39;s blog</title>
+<title>header with underline name in nginx | Emotion&#39;s blog</title>
 <meta name="description" content="身是菩提树，心如明镜台；
 时时勤拂拭，勿使惹尘埃。">
 
@@ -14,6 +16,12 @@
 <link rel="shortcut icon" href="https://emotion.github.io/favicon.ico?v=1561179928206">
 <link rel="stylesheet" href="https://emotion.github.io/styles/main.css">
 
+
+  
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css" />
+  
 
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -75,29 +83,52 @@
 </transition>
 
 
-        <div class="content-container">
+      <div class="content-container">
+        <div class="post-detail">
           
-          <div class="tags-container">
+          <h2 class="post-title">header with underline name in nginx</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2019-06-22</span>
             
-              <a class="tag" href="https://emotion.github.io/tag/mhTTQF1xI">CPU</a>
-            
-              <a class="tag" href="https://emotion.github.io/tag/6GkMrgJsK">Java</a>
-            
-              <a class="tag" href="https://emotion.github.io/tag/X-Fgcd0t9">Tomcat</a>
-            
-              <a class="tag" href="https://emotion.github.io/tag/0png7rxfV">Spring</a>
-            
-              <a class="tag" href="https://emotion.github.io/tag/L6m7AtKWg">nginx</a>
-            
-              <a class="tag" href="https://emotion.github.io/tag/zCdNgxmyp">MyBatis</a>
-            
-              <a class="tag" href="https://emotion.github.io/tag/isuM8S6_R">Log4j</a>
+              <span>
+                <i class="icon-pricetags-outline"></i>
+                
+                  <a href="https://emotion.github.io/tag/L6m7AtKWg">
+                    nginx
+                    
+                  </a>
+                
+              </span>
             
           </div>
+          <div class="post-content">
+            <h1 id="header-with-underline-name-in-nginx">header with underline name in nginx</h1>
+<p>http://stackoverflow.com/questions/22856136/why-underscores-are-forbidden-in-http-header-names</p>
+<p>If you do not explicitly set underscores_in_headers on;, nginx will silently drop HTTP headers with underscores (which are perfectly valid according to the HTTP standard). This is done in order to prevent ambiguities when mapping headers to CGI variables, as both dashes and underscores are mapped to underscores during that process.</p>
 
+          </div>
         </div>
 
-        <div class="site-footer">
+        
+          <div class="next-post">
+            <a class="purple-link" href="https://emotion.github.io/post/mybatis-da-yin-sql-ri-zhi-springmybatis">
+              <h3 class="post-title">
+                下一篇：MyBatis打印sql日志(Spring+MyBatis)
+              </h3>
+            </a>
+          </div>
+          
+      </div>
+
+      
+        
+
+        
+          <div id="disqus_thread"></div>
+        
+      
+
+      <div class="site-footer">
   <div class="slogan">身是菩提树，心如明镜台；
 时时勤拂拭，勿使惹尘埃。</div>
   <div class="social-container">
@@ -121,8 +152,8 @@
 </div>
 
 
-      </div>
-      <script type="application/javascript">
+    </div>
+    <script type="application/javascript">
 
 hljs.initHighlightingOnLoad()
 
@@ -136,8 +167,27 @@ var app = new Vue({
 </script>
 
 
+  
+  
+
+  
+    <script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+    <script>
+
+    var options = {
+      shortname: 'emotion-github-io',
+      apikey: '2LqpYDGM4BvWoILinQhMdCVMoC26JrFEDRnk2SXnLj9LmVajsdZzekYZhXsNyeND',
+    }
+    if ('') {
+      options.api = ''
+    }
+    var dsqjs = new DisqusJS(options)
+
+    </script>
+  
 
 
-    </div>
+
+
   </body>
 </html>

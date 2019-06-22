@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<meta charset="utf-8" >
+
+<title>ServletRequest和HttpServletRequest | Emotion&#39;s blog</title>
+<meta name="description" content="身是菩提树，心如明镜台；
+时时勤拂拭，勿使惹尘埃。">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://emotion.github.io/favicon.ico?v=1561179928206">
+<link rel="stylesheet" href="https://emotion.github.io/styles/main.css">
+
+
+  
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css" />
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://emotion.github.io">
+        <img class="avatar" src="https://emotion.github.io/images/avatar.png?v=1561179928206" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://emotion.github.io">
+        <h1 class="site-title">Emotion&#39;s blog</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="/" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="menu purple-link">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="menu purple-link">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">ServletRequest和HttpServletRequest</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2019-06-22</span>
+            
+              <span>
+                <i class="icon-pricetags-outline"></i>
+                
+                  <a href="https://emotion.github.io/tag/X-Fgcd0t9">
+                    Tomcat
+                    
+                      ，
+                    
+                  </a>
+                
+                  <a href="https://emotion.github.io/tag/6GkMrgJsK">
+                    Java
+                    
+                      ，
+                    
+                  </a>
+                
+                  <a href="https://emotion.github.io/tag/0png7rxfV">
+                    Spring
+                    
+                  </a>
+                
+              </span>
+            
+          </div>
+          <div class="post-content">
+            <h2 id="servletrequest和httpservletrequest">ServletRequest和HttpServletRequest</h2>
+<ul>
+<li>当我们需要自己写filter的时候，我们经常会遇到的接口会有ServletRequest和HttpServletRequest，类似的还有ServletResponse和HttpServletResponse
+<ul>
+<li>例如Filter接口的doFilter(SerlvetRequest request, SerlvetResponse response, FilterChain chain);</li>
+<li>还有OncePerRequestFilter的doFilterInternal(
+HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)；</li>
+</ul>
+</li>
+<li>我们可以看到这里使用了不同的ServletRequest和HttpServletRequest，而且也经常看到直接将ServletRequest强转为HttpServletRequest的代码。这就让人很迷惑了，既然可以强转HttpServletRequest，为什么不直接使用HttpServletRequest呢？</li>
+<li>这两个接口名字上的区别就是Http，所以我的感觉是：是不是还有其它协议的ServletRequest，但是在代码中查找却找不到其它协议的ServletRequest接口。</li>
+<li>不过通过万能的Google，我找到了一个答案https://coderanch.com/t/621449/java/Difference-ServletRequest-HttpServletRequest</li>
+</ul>
+<pre><code>Hi Everyone 
+
+I have couple of doubts, they are as follows: 
+Que1 - What is the difference between the request/ response objects of these two interfaces (ServletRequest &amp; HttpServletRequest) ? 
+Que2 - When a request is send from client to the server, then that request object is whose object ServletRequest or HttpServletRequest ? 
+</code></pre>
+<pre><code>1. Http. Servlets are actually generic components designed to support any sort of operation that operates in a request/response cycle. That mostly means HTTP, but ages ago, IBM mainframes routinely did their online apps in a framework known as CICS (Customer Information Control System). It didn't use tcp/ip (not invented yet), and it didn't use HTML or HTTP (also not invented yet), but it was (mostly) request/response. So had servlets - or Java - existed back then, they would have been appropriate. 
+
+What an HttpServlet adds to the core servlet class is support for things specific to HTTP. For example, how URLs are processed, the difference between request types (GET, POST, HEAD, DELETE and so forth). 
+
+2. Both (an HttpServletRequest is a subclass of ServletRequest). When an HTTP client sends an HTTP(S) URL request to a J2EE webapp server, the server digests the incoming request and constructs an HttpServletRequest and corresponding HttpServletResponse object. Among other things, such as matching up sessions, if applicable. 
+
+Don't forget that all of the above are Interfaces, not classes, so the server's specific implementation class will implement the interface, but its properties and behaviours above and beyond what those interfaces demand are server-specific.
+</code></pre>
+<ul>
+<li>由此我们可以知道，真的是有其它协议的ServletRequest的。ServletRequest是为了更通用的目的（不只是HTTP）而设计的接口，很久很久以前IBM主机上一个框架CICS就有他们专门的协议，这协议也是兼容ServletRequest这个接口的</li>
+<li>按照这个情况的话，那么ServletRequest和HttpServletRequest这个设计是没有问题的，只是在如今，在tomcat上，我们通常的情况都是默认使用的是HTTP协议，用的是HttpServletRequest，所以强制转ServletRequest为HttpServletRequest是没有问题的。</li>
+</ul>
+
+          </div>
+        </div>
+
+        
+          <div class="next-post">
+            <a class="purple-link" href="https://emotion.github.io/post/header-with-underline-name-in-nginx">
+              <h3 class="post-title">
+                下一篇：header with underline name in nginx
+              </h3>
+            </a>
+          </div>
+          
+      </div>
+
+      
+        
+
+        
+          <div id="disqus_thread"></div>
+        
+      
+
+      <div class="site-footer">
+  <div class="slogan">身是菩提树，心如明镜台；
+时时勤拂拭，勿使惹尘埃。</div>
+  <div class="social-container">
+    
+      
+        <a href="https:://github.com/emotion" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+</div>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  
+  
+
+  
+    <script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+    <script>
+
+    var options = {
+      shortname: 'emotion-github-io',
+      apikey: '2LqpYDGM4BvWoILinQhMdCVMoC26JrFEDRnk2SXnLj9LmVajsdZzekYZhXsNyeND',
+    }
+    if ('') {
+      options.api = ''
+    }
+    var dsqjs = new DisqusJS(options)
+
+    </script>
+  
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://emotion.github.io</id>
+    <title>Emotion&apos;s blog</title>
+    <updated>2019-06-22T05:05:48.085Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://emotion.github.io"/>
+    <link rel="self" href="https://emotion.github.io/atom.xml"/>
+    <subtitle>身是菩提树，心如明镜台；
+时时勤拂拭，勿使惹尘埃。</subtitle>
+    <logo>https://emotion.github.io/images/avatar.png</logo>
+    <icon>https://emotion.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2019, Emotion&apos;s blog</rights>
+    <entry>
+        <title type="html"><![CDATA[what synchronized do for stale data?]]></title>
+        <id>https://emotion.github.io/post/what-synchronized-do-for-stale-data</id>
+        <link href="https://emotion.github.io/post/what-synchronized-do-for-stale-data">
+        </link>
+        <updated>2019-06-22T05:04:28.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ServletRequest和HttpServletRequest]]></title>
+        <id>https://emotion.github.io/post/servletrequest-he-httpservletrequest</id>
+        <link href="https://emotion.github.io/post/servletrequest-he-httpservletrequest">
+        </link>
+        <updated>2019-06-22T05:02:27.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[header with underline name in nginx]]></title>
+        <id>https://emotion.github.io/post/header-with-underline-name-in-nginx</id>
+        <link href="https://emotion.github.io/post/header-with-underline-name-in-nginx">
+        </link>
+        <updated>2019-06-22T05:01:04.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MyBatis打印sql日志(Spring+MyBatis)]]></title>
+        <id>https://emotion.github.io/post/mybatis-da-yin-sql-ri-zhi-springmybatis</id>
+        <link href="https://emotion.github.io/post/mybatis-da-yin-sql-ri-zhi-springmybatis">
+        </link>
+        <updated>2016-03-26T15:27:26.000Z</updated>
+    </entry>
+</feed>

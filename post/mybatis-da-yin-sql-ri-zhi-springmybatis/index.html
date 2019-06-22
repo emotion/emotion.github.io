@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<meta charset="utf-8" >
+
+<title>MyBatis打印sql日志(Spring+MyBatis) | Emotion&#39;s blog</title>
+<meta name="description" content="身是菩提树，心如明镜台；
+时时勤拂拭，勿使惹尘埃。">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://emotion.github.io/favicon.ico?v=1561179928206">
+<link rel="stylesheet" href="https://emotion.github.io/styles/main.css">
+
+
+  
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css" />
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://emotion.github.io">
+        <img class="avatar" src="https://emotion.github.io/images/avatar.png?v=1561179928206" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://emotion.github.io">
+        <h1 class="site-title">Emotion&#39;s blog</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="/" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="menu purple-link">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="menu purple-link">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">MyBatis打印sql日志(Spring+MyBatis)</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2016-03-26</span>
+            
+              <span>
+                <i class="icon-pricetags-outline"></i>
+                
+                  <a href="https://emotion.github.io/tag/6GkMrgJsK">
+                    Java
+                    
+                      ，
+                    
+                  </a>
+                
+                  <a href="https://emotion.github.io/tag/0png7rxfV">
+                    Spring
+                    
+                      ，
+                    
+                  </a>
+                
+                  <a href="https://emotion.github.io/tag/zCdNgxmyp">
+                    MyBatis
+                    
+                      ，
+                    
+                  </a>
+                
+                  <a href="https://emotion.github.io/tag/isuM8S6_R">
+                    Log4j
+                    
+                  </a>
+                
+              </span>
+            
+          </div>
+          <div class="post-content">
+            <h2 id="mybatis打印日志的配置分为两部分mybatis的配置和log4j的配置">MyBatis打印日志的配置分为两部分：MyBatis的配置和Log4j的配置</h2>
+<ul>
+<li>首先MyBatis的配置（注：中文的文档里面没有这些）：http://mybatis.org/mybatis-3/logging.html
+<ul>
+<li>在spring的sqlSessionFactory中配置mybatis的配置的位置
+<ul>
+<li>mybatis-config.xml这个配置文件可以扩展MyBatis的一些配置，而不用首先与spring的固有格式</li>
+<li>在mybatis-config.xml里面配置好MyBatis日志的实现方式
+<ul>
+<li>MyBatis支持的日志实现有：SLF4J、Apache Commons Logging、Log4j 2、Log4j、JDK logging，但这里只展示log4j的配置</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>spring的配置
+
+    &lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
+        ***
+        &lt;property name=&quot;configLocation&quot; value=&quot;classpath:spring/mybatis-config.xml&quot;/&gt;
+        ***
+    &lt;/bean&gt;
+</code></pre>
+<pre><code>mybati-config.xml的配置
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+
+&lt;configuration&gt;
+    &lt;settings&gt;
+    	***
+        &lt;setting name=&quot;logImpl&quot; value=&quot;LOG4J&quot;/&gt;
+        ***
+    &lt;/settings&gt;
+&lt;/configuration&gt;
+</code></pre>
+<ul>
+<li>Log4j的配置
+<ul>
+<li>https://logging.apache.org/log4j/1.2/manual.html</li>
+<li>按Log4j的文档，其配置主要有：Loggers、Appenders和Layouts</li>
+<li>其中Appenders和Layouts都可以copy别人的代码再对其进行修改来进行配置，下面是我的其中一个appender的配置，也是用于MyBatis的sql日志的配置。
+<ul>
+<li>需要注意的配置有encoding，日志的编码</li>
+<li>threshold，这个appender会记录的日志的level
+<ul>
+<li>日志的level有：TRACE,DEBUG,INFO,WARN,ERROR and FATAL</li>
+</ul>
+</li>
+<li>layout配置，打印日志的格式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>log4j的appender配置
+
+&lt;appender name=&quot;DEBUG-APPENDER&quot; class=&quot;org.apache.log4j.DailyRollingFileAppender&quot;&gt;
+        &lt;param name=&quot;file&quot; value=&quot;/Users/emotion/logs/applog/debug.log&quot;/&gt;
+        &lt;param name=&quot;append&quot; value=&quot;true&quot;/&gt;
+        &lt;param name=&quot;encoding&quot; value=&quot;UTF-8&quot;/&gt;
+        &lt;param name=&quot;threshold&quot; value=&quot;DEBUG&quot;/&gt;
+        &lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;
+            &lt;param name=&quot;ConversionPattern&quot;
+                   value=&quot;%d [%X{requestURIWithQueryString}]%n  SQL：  %-5p %c{2} - %m%n&quot;/&gt;
+        &lt;/layout&gt;
+    &lt;/appender&gt;
+</code></pre>
+<ul>
+<li>接着
+<ul>
+<li>logger的配置</li>
+<li>我们可以将logger看做一棵树，其中root节点是所有日志都会汇入<root>节点的appender中</li>
+<li>当我们定义了logger之后，以logger的name作为package或者class，在这个package之下的class或者这个class的日志会使用这个特别定制的appender</li>
+<li>这样我们就可以将我们需要分离出来的日志，单独做一个appender，避免和其它文件混合在一起而导致很难查找了。</li>
+<li>在logger中的name为package或者class</li>
+<li>level就是记录的日志的等级</li>
+<li>appender-ref则是这个日志流会流向的appender引用</li>
+</ul>
+</li>
+</ul>
+<pre><code>&lt;root&gt;
+        &lt;level value=&quot;INFO&quot;/&gt;
+        &lt;appender-ref ref=&quot;PROJECT&quot;/&gt;
+        &lt;appender-ref ref=&quot;JmonitorAppender&quot;/&gt;
+    &lt;/root&gt;
+</code></pre>
+<pre><code>log4j的logger配置
+
+   &lt;logger name=&quot;org.apache.ibatis&quot; additivity=&quot;true&quot;&gt;
+        &lt;level value=&quot;DEBUG&quot;/&gt;
+        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;
+    &lt;/logger&gt;
+    &lt;logger name=&quot;java.sql.Statement&quot; additivity=&quot;true&quot;&gt;
+        &lt;level value=&quot;DEBUG&quot;/&gt;
+        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;
+    &lt;/logger&gt;
+    &lt;logger name=&quot;java.sql&quot; additivity=&quot;true&quot;&gt;
+        &lt;level value=&quot;DEBUG&quot;/&gt;
+        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;
+    &lt;/logger&gt;
+    &lt;logger name=&quot;com.aliyun.tianchi.model&quot; additivity=&quot;true&quot;&gt;
+        &lt;level value=&quot;DEBUG&quot;/&gt;
+        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;
+    &lt;/logger&gt;
+    &lt;logger name=&quot;com.aliyun.tianchi.mapper&quot; additivity=&quot;true&quot;&gt;
+        &lt;level value=&quot;DEBUG&quot;/&gt;
+        &lt;appender-ref ref=&quot;DEBUG-APPENDER&quot;/&gt;
+    &lt;/logger&gt;
+</code></pre>
+<ul>
+<li>总结
+<ul>
+<li>首先在MyBatis中定义logImpl，这样就可以让MyBatis的日志机制正常工作</li>
+<li>在log4j中配置好level为debug的appender和logger，这样就可以让应用的日志系统正常的记录MyBatis的日志到配置的文件里面了。</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+
+        
+      </div>
+
+      
+        
+
+        
+          <div id="disqus_thread"></div>
+        
+      
+
+      <div class="site-footer">
+  <div class="slogan">身是菩提树，心如明镜台；
+时时勤拂拭，勿使惹尘埃。</div>
+  <div class="social-container">
+    
+      
+        <a href="https:://github.com/emotion" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+</div>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  
+  
+
+  
+    <script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+    <script>
+
+    var options = {
+      shortname: 'emotion-github-io',
+      apikey: '2LqpYDGM4BvWoILinQhMdCVMoC26JrFEDRnk2SXnLj9LmVajsdZzekYZhXsNyeND',
+    }
+    if ('') {
+      options.api = ''
+    }
+    var dsqjs = new DisqusJS(options)
+
+    </script>
+  
+
+
+
+
+  </body>
+</html>
