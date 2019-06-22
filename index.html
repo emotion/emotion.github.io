@@ -1,18 +1,16 @@
-
+<!DOCTYPE html>
 <html>
   <head>
-    
-<meta charset="utf-8" >
+    <meta charset="utf-8" >
 
 <title>Emotion&#39;s blog</title>
-<meta name="description" content="身是菩提树，心如明镜台；
+<meta name="description" content="身是菩提树，心如明镜台；&lt;/br&gt;
 时时勤拂拭，勿使惹尘埃。">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://emotion.github.io/favicon.ico?v=1561180017363">
+<link rel="shortcut icon" href="https://emotion.github.io/favicon.ico?v=1561180307581">
 <link rel="stylesheet" href="https://emotion.github.io/styles/main.css">
 
 
@@ -20,246 +18,169 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139217226-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-139217226-1');
+</script>
 
 
   </head>
   <body>
     <div id="app" class="main">
-      <div class="site-header-container">
-  <div class="site-header">
-    <div class="left">
-      <a href="https://emotion.github.io">
-        <img class="avatar" src="https://emotion.github.io/images/avatar.png?v=1561180017363" alt="" width="32px" height="32px">
-      </a>
-      <a href="https://emotion.github.io">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://emotion.github.io">
+        <img src="https://emotion.github.io/images/avatar.png?v=1561180307581" class="site-logo">
         <h1 class="site-title">Emotion&#39;s blog</h1>
       </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
     </div>
-    <div class="right">
-      <transition name="fade">
-        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
-      </transition>
-    </div>
-  </div>
-</div>
-
-<transition name="fade">
-  <div class="menu-container" style="display: none;" v-show="menuVisible">
-    <div class="menu-list">
+    <div>
       
         
-          <a href="/" class="menu purple-link">
+          <a href="/" class="site-nav">
             首页
           </a>
         
       
         
-          <a href="/archives" class="menu purple-link">
+          <a href="/archives" class="site-nav">
             归档
           </a>
         
       
         
-          <a href="/tags" class="menu purple-link">
+          <a href="/tags" class="site-nav">
             标签
           </a>
         
       
         
-          <a href="/post/about" class="menu purple-link">
+          <a href="/post/about" class="site-nav">
             关于
           </a>
         
       
     </div>
   </div>
-</transition>
-
-
-      <div class="content-container">
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
         
+          <a class="social-link" href="https://github.com/emotion" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
         
-<section class="post-item">
-    <div class="content">
-      <a href="https://emotion.github.io/post/what-synchronized-do-for-stale-data">
-        <h2 class="post-title">what synchronized do for stale data?</h2>
-      </a>
-      <div class="post-abstract">
+      
         
-      </div>
-      <div class="post-info">
-        <span><i class="icon icon-calendar-outline"></i> 2019-06-22</span>
+      
         
-          <span>
-            <i class="icon icon-pricetags-outline"></i>
-            
-              <a href="https://emotion.github.io/tag/mhTTQF1xI">
-                CPU
-                
-                  ，
-                
-              </a>
-            
-              <a href="https://emotion.github.io/tag/6GkMrgJsK">
-                Java
-                
-              </a>
-            
-          </span>
+      
         
-      </div>
+      
+        
+      
     </div>
-    
-  </section>
-
-<section class="post-item">
-    <div class="content">
-      <a href="https://emotion.github.io/post/servletrequest-he-httpservletrequest">
-        <h2 class="post-title">ServletRequest和HttpServletRequest</h2>
-      </a>
-      <div class="post-abstract">
-        
-      </div>
-      <div class="post-info">
-        <span><i class="icon icon-calendar-outline"></i> 2019-06-22</span>
-        
-          <span>
-            <i class="icon icon-pricetags-outline"></i>
-            
-              <a href="https://emotion.github.io/tag/X-Fgcd0t9">
-                Tomcat
-                
-                  ，
-                
-              </a>
-            
-              <a href="https://emotion.github.io/tag/6GkMrgJsK">
-                Java
-                
-                  ，
-                
-              </a>
-            
-              <a href="https://emotion.github.io/tag/0png7rxfV">
-                Spring
-                
-              </a>
-            
-          </span>
-        
-      </div>
+    <div class="site-description">
+      身是菩提树，心如明镜台；</br>
+时时勤拂拭，勿使惹尘埃。
     </div>
-    
-  </section>
-
-<section class="post-item">
-    <div class="content">
-      <a href="https://emotion.github.io/post/header-with-underline-name-in-nginx">
-        <h2 class="post-title">header with underline name in nginx</h2>
-      </a>
-      <div class="post-abstract">
-        
-      </div>
-      <div class="post-info">
-        <span><i class="icon icon-calendar-outline"></i> 2019-06-22</span>
-        
-          <span>
-            <i class="icon icon-pricetags-outline"></i>
-            
-              <a href="https://emotion.github.io/tag/L6m7AtKWg">
-                nginx
-                
-              </a>
-            
-          </span>
-        
-      </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
     </div>
-    
-  </section>
-
-<section class="post-item">
-    <div class="content">
-      <a href="https://emotion.github.io/post/mybatis-da-yin-sql-ri-zhi-springmybatis">
-        <h2 class="post-title">MyBatis打印sql日志(Spring+MyBatis)</h2>
-      </a>
-      <div class="post-abstract">
-        
-      </div>
-      <div class="post-info">
-        <span><i class="icon icon-calendar-outline"></i> 2016-03-26</span>
-        
-          <span>
-            <i class="icon icon-pricetags-outline"></i>
-            
-              <a href="https://emotion.github.io/tag/6GkMrgJsK">
-                Java
-                
-                  ，
-                
-              </a>
-            
-              <a href="https://emotion.github.io/tag/0png7rxfV">
-                Spring
-                
-                  ，
-                
-              </a>
-            
-              <a href="https://emotion.github.io/tag/zCdNgxmyp">
-                MyBatis
-                
-                  ，
-                
-              </a>
-            
-              <a href="https://emotion.github.io/tag/isuM8S6_R">
-                Log4j
-                
-              </a>
-            
-          </span>
-        
-      </div>
-    </div>
-    
-  </section>
-
-
-<div class="pagination-container">
-  
-  
-</div>
-
-
-      </div>
-
-      <div class="site-footer">
-  <div class="slogan">身是菩提树，心如明镜台；
-时时勤拂拭，勿使惹尘埃。</div>
-  <div class="social-container">
-    
-      
-        <a href="https:://github.com/emotion" target="_blank">
-          <i class="fab fa-github"></i>
-        </a>
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
   </div>
-  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
 </div>
 
 
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://emotion.github.io/post/what-synchronized-do-for-stale-data">
+                  <h2 class="post-title">what synchronized do for stale data?</h2>
+                </a>
+                <div class="post-date">
+                  2019-06-22
+                </div>
+                <div class="post-abstract">
+                  
+                </div>
+              </div>
+              
+            </article>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://emotion.github.io/post/servletrequest-he-httpservletrequest">
+                  <h2 class="post-title">ServletRequest和HttpServletRequest</h2>
+                </a>
+                <div class="post-date">
+                  2019-06-22
+                </div>
+                <div class="post-abstract">
+                  
+                </div>
+              </div>
+              
+            </article>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://emotion.github.io/post/header-with-underline-name-in-nginx">
+                  <h2 class="post-title">header with underline name in nginx</h2>
+                </a>
+                <div class="post-date">
+                  2019-06-22
+                </div>
+                <div class="post-abstract">
+                  
+                </div>
+              </div>
+              
+            </article>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://emotion.github.io/post/mybatis-da-yin-sql-ri-zhi-springmybatis">
+                  <h2 class="post-title">MyBatis打印sql日志(Spring+MyBatis)</h2>
+                </a>
+                <div class="post-date">
+                  2016-03-26
+                </div>
+                <div class="post-abstract">
+                  
+                </div>
+              </div>
+              
+            </article>
+          
+
+          <div class="pagination-container">
+  
+  
+</div>
+
+        </div>
+      </div>
     </div>
-    <script type="application/javascript">
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
 
 hljs.initHighlightingOnLoad()
 

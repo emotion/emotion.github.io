@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://emotion.github.io</id>
     <title>Emotion&apos;s blog</title>
-    <updated>2019-06-22T05:06:59.091Z</updated>
+    <updated>2019-06-22T05:12:20.502Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://emotion.github.io"/>
     <link rel="self" href="https://emotion.github.io/atom.xml"/>
-    <subtitle>身是菩提树，心如明镜台；
+    <subtitle>身是菩提树，心如明镜台；&lt;/br&gt;
 时时勤拂拭，勿使惹尘埃。</subtitle>
     <logo>https://emotion.github.io/images/avatar.png</logo>
     <icon>https://emotion.github.io/favicon.ico</icon>
