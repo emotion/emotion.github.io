@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://emotion.github.io</id>
     <title>Emotion&apos;s blog</title>
-    <updated>2019-06-22T05:12:20.502Z</updated>
+    <updated>2019-06-22T05:13:24.172Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://emotion.github.io"/>
     <link rel="self" href="https://emotion.github.io/atom.xml"/>
@@ -16,21 +16,21 @@
         <id>https://emotion.github.io/post/what-synchronized-do-for-stale-data</id>
         <link href="https://emotion.github.io/post/what-synchronized-do-for-stale-data">
         </link>
-        <updated>2019-06-22T05:04:28.000Z</updated>
+        <updated>2016-06-22T05:04:28.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[ServletRequest和HttpServletRequest]]></title>
         <id>https://emotion.github.io/post/servletrequest-he-httpservletrequest</id>
         <link href="https://emotion.github.io/post/servletrequest-he-httpservletrequest">
         </link>
-        <updated>2019-06-22T05:02:27.000Z</updated>
+        <updated>2016-06-22T05:02:27.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[header with underline name in nginx]]></title>
         <id>https://emotion.github.io/post/header-with-underline-name-in-nginx</id>
         <link href="https://emotion.github.io/post/header-with-underline-name-in-nginx">
         </link>
-        <updated>2019-06-22T05:01:04.000Z</updated>
+        <updated>2016-06-22T05:01:04.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[MyBatis打印sql日志(Spring+MyBatis)]]></title>
