@@ -33,6 +33,17 @@ jobs:
       - name: Build Quartz
         run: npx quartz build
 
+      - name: Convert slug.html to slug/index.html for GitHub Pages
+        run: |
+          shopt -s nullglob
+          for f in public/*.html; do
+            name=$(basename "$f" .html)
+            if [ "$name" != "index" ] && [ "$name" != "404" ]; then
+              mkdir -p "public/$name"
+              mv "$f" "public/$name/index.html"
+            fi
+          done
+
       - name: Preserve CNAME
         run: |
           if [ -f CNAME ]; then
