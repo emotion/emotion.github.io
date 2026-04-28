@@ -1,0 +1,23 @@
+---
+title: "HttpServletRequest getInputStream 为空的坑"
+date: 2016-11-18
+tags: [Java, Proxy, HttpServletRequest, InputStream]
+draft: true
+---
+## HttpServletRequest getInputStream为空的坑
+__问题：在用HttpClient做HttpServletRequest的代理的时候，有时候需要用到getInputStream来获取HttpServletRequest对应请求的请求Body中的内容进行转发。但是在实际的使用过程中，出现了点问题，代理的行为并没有完全符合期望。__
+
+通过Debug手段、HttpClient的Debug日志和打印Request body内容等方式，定位到HttpServletRequest.getInputStream 获取到的内容总是为空。
+排查整个Http Request的整个流程：
+  1. 用户访问页面或者进行某个操作
+  2. 浏览器发送Http请求->Nginx(Tengine)接收到请求，清洗流量，转发给后端tomcat
+  3. tomcat接受到请求，对请求进行包装成为ServletRequest（对于我们来说，一般可以转换为HttpServletRequest）
+  4. HttpServletRequest经历web.xml配置里面的Filter和Servlet的处理。
+* 首先我通过浏览器的Network查看请求的内容，可以发现request的body是有内容的，所以流程1和2是没有问题的。Nginx中并没有进行什么深度的定制和配置，所以我们可以先假定这一段是没有问题的。那么问题应该是出现在流程是，ServletRequest经过Filter和Servlet之后，InputStream就没有内容了。
+* 回想到InputStream的一个特性（大部分时候都是这样），InputStream既然名字为Stream，那么它在被读取之后，是不能够再被读取的（即不能被反复被读取）
+* 所以现在可以假设InputStream是被那个地方读取过，所以导致了InputStream没有内容了。但是按照我的代码，并没有其它地方有getInputStream这个操作了，所以只能从其它方面找。
+* 又回想起当我们POST一个请求的时候，一般来说参数是在POST请求的body里面的，body的ContentType为application/x-www-form-urlencoded（即普通form表单的参数形式，按照url中的参数那种方式进行encode），而如果HttpServletRequest.getParameter(),即从POST请求中获取参数的时候，是肯定会去获取body的参数的。那么问题来了，它是怎么获取body的参数的呢？很明显它需要通过InputStream，才能读取到body的内容。
+* 所以结合上面两点我们可以推测：既然我们既可以getInputStream和getParameter，所以如果用户没有调用getParameter，那么HttpServletRequest是不会去读取InputStream的，那么我们可以通过getInputStream获取到request的body；而如果调用了getParameter，那么HttpServletRequest就会去解析InputStream获取参数的内容，从而导致在获取InputStream的时候，里面已经没有内容可以读了，所以就会出现RequestBody内容为空的问题。
+* 通过将所有会调用getParameter的Filter都调整到ProxyFilter之后，代理的行为正常了，然后通过查看HttpServletRequest.getParameter的代码，可以看到起读取InputStream内容的代码。所以可以验证我的推测是正确的。
+
+__以上，如果想使用HttpServletRequest.getInputStream，那么在之前一定不能调用getParameter，因为它会去解析InputStream，而导致getInputStream的时候InputStream中已经没有内容了。__
