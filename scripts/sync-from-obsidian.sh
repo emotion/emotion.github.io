@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Sync blog source files from Obsidian vault to Quartz content directory.
 #
-# Source: Obsidian vault Blog/ directory (the single source of truth)
+# Source: Obsidian vault Default/Blog/ directory (the single source of truth)
 # Target: Quartz content/ directory (auto-generated, safe to be overwritten)
 #
 # Usage: ./scripts/sync-from-obsidian.sh
 
 set -euo pipefail
 
-OBSIDIAN_BLOG="/Users/emotion/Library/Mobile Documents/iCloud~md~obsidian/Documents/OBSIDIAN/Blog"
+OBSIDIAN_BLOG="/Users/emotion/Library/Mobile Documents/iCloud~md~obsidian/Documents/OBSIDIAN/Default/Blog"
 QUARTZ_CONTENT="$(cd "$(dirname "$0")/.." && pwd)/content"
 
 if [ ! -d "$OBSIDIAN_BLOG" ]; then
