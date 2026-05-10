@@ -30,6 +30,7 @@ rsync -av --delete \
   --exclude='.backup/' \
   --exclude='.trash/' \
   --exclude='.obsidian/' \
+  --exclude='.workbuddy/' \
   --exclude='.DS_Store' \
   --include='*/' \
   --include='*.md' \

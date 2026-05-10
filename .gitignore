@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Quartz build/cache outputs
+public/
+.quartz-cache/
+
+# WorkBuddy local/project metadata copied from the Obsidian vault
+.workbuddy/
+content/.workbuddy/
+**/.workbuddy/
+
+# macOS
+.DS_Store
